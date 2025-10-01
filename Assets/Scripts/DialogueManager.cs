@@ -2,16 +2,22 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using TMPro;
+using DG.Tweening;
 
 public class DialogueManager : MonoBehaviour
 {
     public TextMeshProUGUI dialogueText;
     public GameObject dialogueBox;
-    public float typingSpeed = 0.05f;
+    public GameObject imageBox;
     public Button continueButton;
     public string[] sentences;
     public string currSentence;
-    bool typing = false;
+    private bool typing = false;
+    private float jumpPower = 10f;
+    private int numJumps = 1;
+    private float duration = 2.0f;
+    private float typingSpeed = 0.05f;
+    public Transform[] bouncePositions;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -23,6 +29,13 @@ public class DialogueManager : MonoBehaviour
             "My hands cup each other the way hers did."
         };
         continueButton.onClick.AddListener(DisplayNextSentence);
+
+        Sequence bounceSequence = DOTween.Sequence();
+        bounceSequence.Append(imageBox.transform.DOJump(bouncePositions[1].position, jumpPower, numJumps, duration));
+        // bounceSequence.AppendInterval(0.25f);
+        bounceSequence.Append(imageBox.transform.DOJump(bouncePositions[2].position, jumpPower, numJumps, duration));
+        bounceSequence.Append(imageBox.transform.DOJump(bouncePositions[0].position, jumpPower, numJumps, duration));
+        bounceSequence.SetLoops(-1, LoopType.Restart);
     }
 
     public void UpdateSentences(string[] newSentences)
