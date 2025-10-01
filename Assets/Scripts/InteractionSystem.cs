@@ -12,12 +12,21 @@ public class InteractionSystem : MonoBehaviour
     private BaseInteractable currentHover;
 
     public LayerMask InteractionRayLayers;
+    [SerializeField]private PopupUI _popupUIPrefab;
+    public PopupUI PopupUIPrefab
+    {
+        get { return _popupUIPrefab; }
+        set { _popupUIPrefab = value; }
+    }
+
+    private PopupUI currentPopupUI;
 
     [SerializeField] private float interactRange;
 
     private void Update()
     {
         PerformRay();
+        TryUpdatePopup();
     }
 
     private void PerformRay()
@@ -45,7 +54,12 @@ public class InteractionSystem : MonoBehaviour
         DoHover(lastHover, false);
         DoHover(currentHover, true);
     }
-
+    private void TryUpdatePopup()
+    {
+        if (currentPopupUI == null || currentHover == null) return;
+        string message = Vector3.Distance(PlayerController.instance.transform.position, currentHover.transform.position) > interactRange ? "You're too far to interact" : currentHover.PopupMessage;
+        currentPopupUI.Initialise(null, message);
+    }
     public void TryInteract()
     {
         if (currentHover == null) return;
@@ -71,9 +85,13 @@ public class InteractionSystem : MonoBehaviour
         if (active)
         {
             print($"{interactable.Name} was hovered");
+            currentPopupUI = PopupUI.CreatePopupUI();
+            //string message = Vector3.Distance(PlayerController.instance.transform.position, currentHover.transform.position) > interactRange ? "You're too far to interact" : interactable.PopupMessage;
+            //currentPopupUI.Initialise(null, message);
         }
         else
         {
+            if (currentPopupUI != null) Destroy(currentPopupUI.gameObject);
             print($"{interactable.Name} was UnHovered");
         }
     }

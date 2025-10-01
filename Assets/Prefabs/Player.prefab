@@ -150,6 +150,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c280be2f31317284989d957593b8ec95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GroundLayers:
+    serializedVersion: 2
+    m_Bits: 128
   MoveSpeed: 8
 --- !u!114 &6753136286358085935
 MonoBehaviour:
@@ -166,4 +169,6 @@ MonoBehaviour:
   InteractionRayLayers:
     serializedVersion: 2
     m_Bits: 55
+  _popupUIPrefab: {fileID: 8439584242672224346, guid: e918731bd0ab73943b29bae4adb16b84,
+    type: 3}
   interactRange: 6
