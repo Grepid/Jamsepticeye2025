@@ -3,21 +3,33 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(CharacterController), typeof(InteractionSystem))]
 public class PlayerController : MonoBehaviour
 {
     private CharacterController cc;
+    private InteractionSystem intSys;
     [SerializeField] private float MoveSpeed = 10f;
 
     private void Awake()
     {
         cc = GetComponent<CharacterController>();
+        intSys = GetComponent<InteractionSystem>();
     }
 
     private void Update()
     {
         MovePlayer();
+        HandleInputs();
     }
+
+    private void HandleInputs()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            intSys.TryInteract();
+        }
+    }
+
 
     private void MovePlayer()
     {
