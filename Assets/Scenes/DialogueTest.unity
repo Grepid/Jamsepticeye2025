@@ -484,10 +484,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2059956306387490533, guid: 7393a0067f65e564ba9c632c9b9ae57f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 182.00003
+      objectReference: {fileID: 0}
+    - target: {fileID: 2059956306387490533, guid: 7393a0067f65e564ba9c632c9b9ae57f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -64.99999
+      objectReference: {fileID: 0}
     - target: {fileID: 2760557053504441820, guid: 7393a0067f65e564ba9c632c9b9ae57f,
         type: 3}
       propertyPath: m_Name
       value: DialogueBox
+      objectReference: {fileID: 0}
+    - target: {fileID: 3143711566268847170, guid: 7393a0067f65e564ba9c632c9b9ae57f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 242
+      objectReference: {fileID: 0}
+    - target: {fileID: 3143711566268847170, guid: 7393a0067f65e564ba9c632c9b9ae57f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -65
       objectReference: {fileID: 0}
     - target: {fileID: 3581669079727630525, guid: 7393a0067f65e564ba9c632c9b9ae57f,
         type: 3}
@@ -499,6 +519,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.a
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3944771658334387343, guid: 7393a0067f65e564ba9c632c9b9ae57f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 302.00003
+      objectReference: {fileID: 0}
+    - target: {fileID: 3944771658334387343, guid: 7393a0067f65e564ba9c632c9b9ae57f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -64.99999
+      objectReference: {fileID: 0}
+    - target: {fileID: 6969541968568531540, guid: 7393a0067f65e564ba9c632c9b9ae57f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -149
+      objectReference: {fileID: 0}
+    - target: {fileID: 8023487407658572306, guid: 7393a0067f65e564ba9c632c9b9ae57f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 277
+      objectReference: {fileID: 0}
+    - target: {fileID: 8023487407658572306, guid: 7393a0067f65e564ba9c632c9b9ae57f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -186
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
