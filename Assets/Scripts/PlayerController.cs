@@ -8,10 +8,12 @@ public class PlayerController : MonoBehaviour
 {
     private CharacterController cc;
     private InteractionSystem intSys;
+    public static PlayerController instance { get; private set; }
     [SerializeField] private float MoveSpeed = 10f;
 
     private void Awake()
     {
+        instance = this;
         cc = GetComponent<CharacterController>();
         intSys = GetComponent<InteractionSystem>();
     }

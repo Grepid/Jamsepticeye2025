@@ -13,10 +13,11 @@ public class InteractionSystem : MonoBehaviour
 
     public LayerMask InteractionRayLayers;
 
+    [SerializeField] private float interactRange;
+
     private void Update()
     {
         PerformRay();
-
     }
 
     private void PerformRay()
@@ -48,7 +49,12 @@ public class InteractionSystem : MonoBehaviour
     public void TryInteract()
     {
         if (currentHover == null) return;
-
+        if(Vector3.Distance(PlayerController.instance.transform.position,currentHover.transform.position) > interactRange)
+        {
+            //Run something to say you're too far
+            print($"You're too far away to interact");
+            return;
+        }
         currentHover.Interact();
     }
 
