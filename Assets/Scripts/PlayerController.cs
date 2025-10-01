@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     {
         MovePlayer();
         HandleInputs();
+        LookAtCursor();
     }
 
     private void HandleInputs()
@@ -35,11 +36,23 @@ public class PlayerController : MonoBehaviour
 
     private void MovePlayer()
     {
-        Vector3 moveInput = new Vector3(Input.GetAxis("Horizontal"),0, Input.GetAxis("Vertical"));
+        Vector3 moveInput = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         moveInput = moveInput.normalized;
 
         Vector3 moveVector = moveInput * MoveSpeed * Time.deltaTime;
 
         cc.Move(moveVector);
+    }
+
+    private void LookAtCursor()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit, 999, GroundLayers, QueryTriggerInteraction.Ignore))
+        {
+            Vector3 lookPoint = hit.point;
+            lookPoint.y = transform.position.y;
+            transform.LookAt(lookPoint);
+        }
+        // transform.LookAt(Input.mousePosition);
     }
 }
