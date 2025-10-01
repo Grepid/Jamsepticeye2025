@@ -14,7 +14,11 @@ public class BodyParts : MonoBehaviour
         Average,
         Long,
         Mutated,
-        Robot,
+        Robot
+    }
+
+    enum TorsoVariation
+    {
         Suit,
         Construction_Uniform,
         Bulletproof_Vest,
