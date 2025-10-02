@@ -16,9 +16,15 @@ public class Zombie : MonoBehaviour
     // Mutated attacks in weird patterns
     // Robot idk kills the player or smthng lmao
 
-    [SerializeField] public BodyParts bp;
+    private BodyParts bp;
+    private BodyParts[] wholeBody = new BodyParts[5]; // a whole body has 2 arms, 2 legs, and 1 torso. We also want it so that there are between 0-2 unique body parts per zombie
+    private bool firstPass = true;
     private float damageThrust = 500f;
     private int hp = 5;
+    private int legCounter = 2;
+    private int armCounter = 2;
+    private bool torsoExists = false;
+    private int currLimbs = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -27,46 +33,126 @@ public class Zombie : MonoBehaviour
 
     public void Initialize(PartType? parts, Variation? vari, TorsoVariation? tvari)
     {
-        if (parts == null || (vari == null && tvari == null))
+        // LLLLLLLLLLLLLLLLETS GO GAMBLINGGGGGGG
+        // Determine how many unique body parts this one has
+        int uniqueBodyParts = UnityEngine.Random.Range(0, 3);
+        Debug.Log("Num body parts: " + uniqueBodyParts);
+
+        for (int i = 0; i < uniqueBodyParts; ++i)
         {
-            // BodyParts not passed in from ZombieSpawner, initialize random
-            Array vals = Enum.GetValues(typeof(PartType)); // ugly af code uh it just grabs a random enum from PartType
-            Array valsNT = Enum.GetValues(typeof(Variation));
-            Array valsT = Enum.GetValues(typeof(TorsoVariation));
-            PartType bp1 = (PartType)vals.GetValue(UnityEngine.Random.Range(0, vals.Length));
-            // did you know that GetValue is called from the array you get from Enum.GetValues instead of the enum itself i didn't know that oopsies
-            // rng 1/10 chance that if it's arm, to do the special arm
-            if (bp1 == PartType.Arms && UnityEngine.Random.Range(0, 10) == 0)
+            if (!firstPass || parts == null || (vari == null && tvari == null))
             {
-                bp = new BodyParts(bp1, vari: Variation.SPECIAL_JACKSEPTICEYE_ARM_SPAGHETTI_CODE_THIS_IN);
-                Debug.Log("Special arm spawned");
-            }
-            else
-            {
-                bp = (bp1 == PartType.Torso) ? new BodyParts(bp1, tvari: (TorsoVariation)valsT.GetValue(UnityEngine.Random.Range(0, valsT.Length))) : new BodyParts(bp1, vari: (Variation)valsNT.GetValue(UnityEngine.Random.Range(0, valsNT.Length-1)));
-            }
-            }
-        else
-        {
-            if (!parts.HasValue)
-            {
-                throw new System.Exception("Incorrect order of arguments / Wrong arguments");
-            }
-            else
-            {
-                if (parts == PartType.Torso)
+                // BodyParts not passed in from ZombieSpawner, initialize random
+                // Always want to go here past the first pass because the first pass is only if zombiespawner passes in a certain body part (for quest)
+                Array vals = Enum.GetValues(typeof(PartType)); // ugly af code uh it just grabs a random enum from PartType
+                Array valsNT = Enum.GetValues(typeof(Variation));
+                Array valsT = Enum.GetValues(typeof(TorsoVariation));
+                PartType bp1 = (PartType)vals.GetValue(UnityEngine.Random.Range(0, vals.Length));
+                switch (bp1)
                 {
-                    bp = new BodyParts(parts.Value, tvari: tvari);
+                    case PartType.Torso:
+                        if (torsoExists)
+                        {
+                            i++;
+                            continue;
+                        }
+                        break;
+                    case PartType.Arms:
+                        if (armCounter == 0)
+                        {
+                            i++;
+                            continue;
+                        }
+                        break;
+                    case PartType.Legs:
+                        if (legCounter == 0)
+                        {
+                            i++;
+                            continue;
+                        }
+                        break;
+                }
+                // ^ spaghetti code lmao
+                // did you know that GetValue is called from the array you get from Enum.GetValues instead of the enum itself i didn't know that oopsies
+                // rng 1/10 chance that if it's arm, to do the special arm
+                if (bp1 == PartType.Arms && UnityEngine.Random.Range(0, 10) == 0)
+                {
+                    bp = new BodyParts(bp1, vari: Variation.SPECIAL_JACKSEPTICEYE_ARM_SPAGHETTI_CODE_THIS_IN);
+                    Debug.Log("Special arm spawned");
                 }
                 else
                 {
-                    bp = new BodyParts(parts.Value, vari: vari);
+                    bp = (bp1 == PartType.Torso) ? new BodyParts(bp1, tvari: (TorsoVariation)valsT.GetValue(UnityEngine.Random.Range(1, valsT.Length))) : new BodyParts(bp1, vari: (Variation)valsNT.GetValue(UnityEngine.Random.Range(1, valsNT.Length - 1)));
+                    // ^ start at 1 to exclude average
                 }
-
+                firstPass = false;
             }
+            else
+            {
+                if (!parts.HasValue)
+                {
+                    throw new System.Exception("Incorrect order of arguments / Wrong arguments");
+                }
+                else
+                {
+                    if (parts == PartType.Torso)
+                    {
+                        bp = new BodyParts(parts.Value, tvari: tvari);
+                    }
+                    else
+                    {
+                        bp = new BodyParts(parts.Value, vari: vari);
+                    }
+                }
+                firstPass = false;
+            }
+
+            switch (bp.pt)
+            {
+                case PartType.Torso:
+                    torsoExists = true;
+                    break;
+                case PartType.Arms:
+                    armCounter--;
+                    break;
+                case PartType.Legs:
+                    legCounter--;
+                    break;
+            }
+            // Debug.Log("TEST");
+            Debug.Log("TEST: " + bp.pt + " " + bp.v + " " + bp.tv);
+            currLimbs++;
+            wholeBody[i] = bp;
         }
-        Debug.Log(bp.pt + " " + bp.v + " " + bp.tv);
+
+        BuildOutRestOfBody();
         // if we ever need to modify it so that a zombie has multiple body parts we can just throw a for loop or smthng around this whole thing
+    }
+
+    public void BuildOutRestOfBody()
+    {
+        // Each zombie has 2 legs, 2 arms, and 1 torso
+        // Called after Initialize, anything that's not special will just be the normal
+        for (int i = 0; i < legCounter; ++i)
+        {
+            wholeBody[currLimbs] = new BodyParts(PartType.Legs, vari: Variation.Average);
+            currLimbs++;
+        }
+        for (int i = 0; i < armCounter; ++i)
+        {
+            wholeBody[currLimbs] = new BodyParts(PartType.Arms, vari: Variation.Average);
+            currLimbs++;
+        }
+        if (!torsoExists)
+        {
+            wholeBody[currLimbs] = new BodyParts(PartType.Torso, tvari: TorsoVariation.Average);
+            currLimbs++;
+        }
+        Debug.Log("This zombie has: ");
+        foreach (BodyParts part in wholeBody)
+        {
+            Debug.Log(part.pt + " " + part.v + " " + part.tv);
+        }
     }
 
     public void DamageSelf(Vector3 pointOfImpact)
