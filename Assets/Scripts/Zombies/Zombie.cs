@@ -56,6 +56,7 @@ public class Zombie : MonoBehaviour
             }
         }
         Debug.Log(bp.pt + " " + bp.v + " " + bp.tv);
+        // if we ever need to modify it so that a zombie has multiple body parts we can just throw a for loop or smthng around this whole thing
     }
 
     public void DamageSelf(Vector3 pointOfImpact)
