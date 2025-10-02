@@ -16,14 +16,14 @@ public class Zombie : MonoBehaviour
     // Mutated attacks in weird patterns
     // Robot idk kills the player or smthng lmao
 
-    public BodyParts bp;
+    [SerializeField] public BodyParts bp;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         
     }
 
-    public Zombie(PartType? parts, Variation? vari, TorsoVariation? tvari)
+    public void Initialize(PartType? parts, Variation? vari, TorsoVariation? tvari)
     {
         if (parts == null || (vari == null && tvari == null))
         {
@@ -51,9 +51,10 @@ public class Zombie : MonoBehaviour
                 {
                     bp = new BodyParts(parts.Value, vari: vari);
                 }
-                
+
             }
         }
+        Debug.Log(bp.pt + " " + bp.v + " " + bp.tv);
     }
 
     // Update is called once per frame
