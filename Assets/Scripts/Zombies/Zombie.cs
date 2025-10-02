@@ -17,6 +17,7 @@ public class Zombie : MonoBehaviour
     // Robot idk kills the player or smthng lmao
 
     [SerializeField] public BodyParts bp;
+    private float damageThrust = 500f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -57,9 +58,18 @@ public class Zombie : MonoBehaviour
         Debug.Log(bp.pt + " " + bp.v + " " + bp.tv);
     }
 
+    public void DamageSelf(Vector3 pointOfImpact)
+    {
+        Debug.Log("hit");
+        this.GetComponent<Rigidbody>().AddForce((transform.position - pointOfImpact) * damageThrust);
+    }
+
     // Update is called once per frame
     void Update()
     {
-        
+        // walk and run should probably be in another class inherited from an abstract ZombieWalk and ZombieAttack class methinks
+        // and after that, this class could attach those specific classes:
+        // i.e. if bp.pt = Arm and bp.v = Long, attach ZombieAttackLong to component
+        // I forget do we want multiple body parts
     }
 }

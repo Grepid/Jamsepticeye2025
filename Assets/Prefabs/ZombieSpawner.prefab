@@ -47,3 +47,6 @@ MonoBehaviour:
   zombiePrefab: {fileID: 642777037481819566, guid: a60b3d1a9146f8743967eb0972ef58b7,
     type: 3}
   ground: {fileID: 0}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 2048
