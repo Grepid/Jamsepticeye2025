@@ -16,11 +16,14 @@ public class BodyParts
         Average,
         Long,
         Mutated,
-        Robot
+        Robot,
+        Pirate,
+        SPECIAL_JACKSEPTICEYE_ARM_SPAGHETTI_CODE_THIS_IN
     }
 
     public enum TorsoVariation
     {
+        Average,
         Suit,
         Construction_Uniform,
         Bulletproof_Vest,

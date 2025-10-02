@@ -35,8 +35,17 @@ public class Zombie : MonoBehaviour
             Array valsT = Enum.GetValues(typeof(TorsoVariation));
             PartType bp1 = (PartType)vals.GetValue(UnityEngine.Random.Range(0, vals.Length));
             // did you know that GetValue is called from the array you get from Enum.GetValues instead of the enum itself i didn't know that oopsies
-            bp = (bp1 == PartType.Torso) ? new BodyParts(bp1, tvari: (TorsoVariation)valsT.GetValue(UnityEngine.Random.Range(0, valsT.Length))) : new BodyParts(bp1, vari: (Variation)valsNT.GetValue(UnityEngine.Random.Range(0, valsNT.Length)));
-        }
+            // rng 1/10 chance that if it's arm, to do the special arm
+            if (bp1 == PartType.Arms && UnityEngine.Random.Range(0, 10) == 0)
+            {
+                bp = new BodyParts(bp1, vari: Variation.SPECIAL_JACKSEPTICEYE_ARM_SPAGHETTI_CODE_THIS_IN);
+                Debug.Log("Special arm spawned");
+            }
+            else
+            {
+                bp = (bp1 == PartType.Torso) ? new BodyParts(bp1, tvari: (TorsoVariation)valsT.GetValue(UnityEngine.Random.Range(0, valsT.Length))) : new BodyParts(bp1, vari: (Variation)valsNT.GetValue(UnityEngine.Random.Range(0, valsNT.Length-1)));
+            }
+            }
         else
         {
             if (!parts.HasValue)
