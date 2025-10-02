@@ -1,15 +1,17 @@
 using UnityEngine;
+using System;
+using System.Collections;
 
-public class BodyParts : MonoBehaviour
+public class BodyParts
 {
-    enum PartType
+    public enum PartType
     {
         Legs,
         Arms,
         Torso
     }
 
-    enum Variation
+    public enum Variation
     {
         Average,
         Long,
@@ -17,11 +19,43 @@ public class BodyParts : MonoBehaviour
         Robot
     }
 
-    enum TorsoVariation
+    public enum TorsoVariation
     {
         Suit,
         Construction_Uniform,
         Bulletproof_Vest,
         Jacksepticeye_Branded_Tshirt
+    }
+
+    public PartType pt;
+    public Variation? v;
+    public TorsoVariation? tv;
+
+    // Private constructor for creating the overall zombie
+    BodyParts(PartType type, Variation? vari, TorsoVariation? tvari)
+    {
+        pt = type;
+        v = vari;
+        tv = tvari;
+
+        // Sanitation check for Torso
+        if (type == PartType.Torso)
+        {
+            if (vari != null)
+            {
+                throw new System.ArgumentException("Torso - Cannot have Variation argument.");
+            }
+            if (tvari == null)
+            {
+                throw new System.ArgumentException("Torso - Torso Variation can't be null.");
+            }
+        }
+        else
+        {
+            if (tvari != null)
+            {
+                throw new System.ArgumentException("Cannot have Torso Variation in non-Torso Part.");
+            }
+        }
     }
 }
