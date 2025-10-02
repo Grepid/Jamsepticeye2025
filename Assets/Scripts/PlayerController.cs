@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 
 [RequireComponent(typeof(CharacterController), typeof(InteractionSystem))]
 public class PlayerController : MonoBehaviour
@@ -17,6 +18,9 @@ public class PlayerController : MonoBehaviour
         instance = this;
         cc = GetComponent<CharacterController>();
         intSys = GetComponent<InteractionSystem>();
+
+        GameObject shovel = this.transform.GetChild(0).gameObject;
+        shovel.SetActive(false);
     }
 
     private void Update()
@@ -32,6 +36,29 @@ public class PlayerController : MonoBehaviour
         {
             intSys.TryInteract();
         }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            ShovelTime();
+        }
+    }
+
+    private void ShovelTime()
+    {
+        GameObject shovel = this.transform.GetChild(0).gameObject;
+        shovel.SetActive(true);
+        Vector3 originalPos = shovel.transform.position;
+        Quaternion originalRot = shovel.transform.rotation;
+        // Debug.Log(shovel.name);
+        Sequence seq = DOTween.Sequence();
+        seq.Join(shovel.transform.DOLocalMove(this.transform.GetChild(1).localPosition, 0.5f));
+        seq.Join(shovel.transform.DOLocalRotateQuaternion(this.transform.GetChild(1).localRotation, 0.5f));
+
+        seq.OnComplete(() =>
+        {
+            seq.Rewind();
+            shovel.SetActive(false);
+        });
     }
 
 
