@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     private InteractionSystem intSys;
     public LayerMask GroundLayers;
     public static PlayerController instance { get; private set; }
+    private float timeDelay = 0.5f;
     [SerializeField] private float MoveSpeed = 10f;
 
     private void Awake()
@@ -28,6 +29,8 @@ public class PlayerController : MonoBehaviour
         MovePlayer();
         HandleInputs();
         LookAtCursor();
+
+        timeDelay -= Time.deltaTime;
     }
 
     private void HandleInputs()
@@ -45,20 +48,24 @@ public class PlayerController : MonoBehaviour
 
     private void ShovelTime()
     {
-        GameObject shovel = this.transform.GetChild(0).gameObject;
-        shovel.SetActive(true);
-        Vector3 originalPos = shovel.transform.position;
-        Quaternion originalRot = shovel.transform.rotation;
-        // Debug.Log(shovel.name);
-        Sequence seq = DOTween.Sequence();
-        seq.Join(shovel.transform.DOLocalMove(this.transform.GetChild(1).localPosition, 0.5f));
-        seq.Join(shovel.transform.DOLocalRotateQuaternion(this.transform.GetChild(1).localRotation, 0.5f));
-
-        seq.OnComplete(() =>
+        if (timeDelay <= 0f)
         {
-            seq.Rewind();
-            shovel.SetActive(false);
-        });
+            GameObject shovel = this.transform.GetChild(0).gameObject;
+            shovel.SetActive(true);
+            Vector3 originalPos = shovel.transform.position;
+            Quaternion originalRot = shovel.transform.rotation;
+            // Debug.Log(shovel.name);
+            Sequence seq = DOTween.Sequence();
+            seq.Join(shovel.transform.DOLocalMove(this.transform.GetChild(1).localPosition, 0.5f));
+            seq.Join(shovel.transform.DOLocalRotateQuaternion(this.transform.GetChild(1).localRotation, 0.5f));
+
+            seq.OnComplete(() =>
+            {
+                seq.Rewind();
+                shovel.SetActive(false);
+            });
+            timeDelay = 0.5f;
+        }
     }
 
 
