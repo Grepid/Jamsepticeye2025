@@ -18,6 +18,7 @@ public class Zombie : MonoBehaviour
 
     [SerializeField] public BodyParts bp;
     private float damageThrust = 500f;
+    private int hp = 5;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -63,6 +64,11 @@ public class Zombie : MonoBehaviour
     {
         Debug.Log("hit");
         this.GetComponent<Rigidbody>().AddForce((transform.position - pointOfImpact) * damageThrust);
+        this.hp -= 1;
+        if (this.hp <= 0)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     // Update is called once per frame
@@ -72,5 +78,6 @@ public class Zombie : MonoBehaviour
         // and after that, this class could attach those specific classes:
         // i.e. if bp.pt = Arm and bp.v = Long, attach ZombieAttackLong to component
         // I forget do we want multiple body parts
+        // ...or we just do like 50 million switch cases which looks to be somewhat better? mostly cuz abstract classes and interfaces don't really help much more than switch cases in this case
     }
 }
