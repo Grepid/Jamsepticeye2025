@@ -32,7 +32,7 @@ public class BodyParts
     public TorsoVariation? tv;
 
     // Private constructor for creating the overall zombie
-    BodyParts(PartType type, Variation? vari, TorsoVariation? tvari)
+    public BodyParts(PartType type, Variation? vari = null, TorsoVariation? tvari = null)
     {
         pt = type;
         v = vari;
