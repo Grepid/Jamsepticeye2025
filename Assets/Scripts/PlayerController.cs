@@ -81,13 +81,15 @@ public class PlayerController : MonoBehaviour
 
     private void LookAtCursor()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit, 999, GroundLayers, QueryTriggerInteraction.Ignore))
-        {
-            Vector3 lookPoint = hit.point;
-            lookPoint.y = transform.position.y;
-            transform.LookAt(lookPoint);
+        if (!this.transform.GetChild(0).gameObject.activeSelf) {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, 999, GroundLayers, QueryTriggerInteraction.Ignore))
+            {
+                Vector3 lookPoint = hit.point;
+                lookPoint.y = transform.position.y;
+                transform.LookAt(lookPoint);
+            }
+            // transform.LookAt(Input.mousePosition);
         }
-        // transform.LookAt(Input.mousePosition);
     }
 }
