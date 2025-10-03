@@ -20,13 +20,10 @@ public class DialogueManager : MonoBehaviour
     public Transform[] bouncePositions;
     public static DialogueManager instance { get; private set; }
 
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         instance = this;
-    }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
         sentences = new string[]{
             "Six years now my mother gone to earth. This dew, light as footsteps of the dead. She often walked out here, craned her neck, considered the fruit, hundreds of globes in their leathery hides, figuring on custard and pudding, meringue and hollandaise.",
             "But her plans didn't work out.",
@@ -47,11 +44,11 @@ public class DialogueManager : MonoBehaviour
     public void UpdateSentences(string[] newSentences)
     {
         sentences = newSentences;
-        EndDialogue();
     }
 
     public void DisplayNextSentence()
     {
+        Debug.Log("working?");
         if (typing)
         {
             dialogueText.text = currSentence;
@@ -71,12 +68,8 @@ public class DialogueManager : MonoBehaviour
         StartCoroutine(TypeSentence(sentence));
     }
 
-    void EndDialogue()
+    public void EndDialogue()
     {
-        // give player back movement
-        if (PlayerController.instance == null) {
-            
-        }
         dialogueBox.SetActive(false);
     }
 

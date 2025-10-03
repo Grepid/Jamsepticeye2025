@@ -31,7 +31,7 @@ public class Family : MonoBehaviour
         // givenZom.BuildOutRestOfBody(); // <- completely average corpse / zombie
         // duck it spaghetti code time
         zomR = Instantiate(zombiePrefab.GetComponent<Zombie>(), new Vector3(10000, 10000, 10000), Quaternion.identity, this.transform);
-        zomR.Initialize(BodyParts.PartType.Arms, vari:BodyParts.Variation.Missing, tvari:null);
+        zomR.Initialize(BodyParts.PartType.Arms, vari: BodyParts.Variation.Missing, tvari: null);
         zomG = Instantiate(zombiePrefab.GetComponent<Zombie>(), new Vector3(10000, 10000, 10000), Quaternion.identity, this.transform);
         zomG.BuildOutRestOfBody();
 
@@ -50,7 +50,9 @@ public class Family : MonoBehaviour
         }
 
         DialogueManager dm = FindFirstObjectByType<DialogueManager>();
+        Debug.Log(dm);
         dm.gameObject.SetActive(true);
         dm.UpdateSentences(sentences.ToArray());
+        dm.DisplayNextSentence();
     }
 }
