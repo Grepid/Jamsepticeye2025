@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using static BodyParts;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 [RequireComponent(typeof(CharacterController), typeof(InteractionSystem))]
 public class PlayerController : MonoBehaviour
@@ -16,6 +18,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float MoveSpeed = 10f;
 
     public BodyParts heldPart;
+    private DroppedBodyPart droppedPartPrefab;
 
     private void Awake()
     {
@@ -25,6 +28,12 @@ public class PlayerController : MonoBehaviour
 
         GameObject shovel = this.transform.GetChild(0).gameObject;
         shovel.SetActive(false);
+
+        Addressables.LoadAssetAsync<GameObject>("Assets/Prefabs/DroppedBodyPart.prefab").Completed += (AsyncOperationHandle<GameObject> obj) =>
+        {
+            droppedPartPrefab= obj.Result.GetComponent<DroppedBodyPart>();
+            Addressables.Release(obj);
+        };
     }
 
     private void Update()
@@ -47,6 +56,11 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             intSys.TryInteract();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            DropPart();
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -102,29 +116,52 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void PickupPart(BodyParts part,DroppedBodyPart groundDrop = null)
+    public void PickupPart(DroppedBodyPart part)
     {
         if(heldPart != null)
         {
-            DropPart(groundDrop);
+            DropPart(part);
         }
 
-        //Give the character model the arm in the hand
-
-        heldPart = part;
+        GivePart(part.part);
+        
     }
 
-    public void DropPart(DroppedBodyPart replace = null)
+    public void GivePart(BodyParts part)
     {
-        if(replace != null)
+        heldPart = part;
+        //Give the character model the arm in the hand here
+    }
+
+    public DroppedBodyPart DropPart(DroppedBodyPart replace = null)
+    {
+        DroppedBodyPart newPart = Instantiate(droppedPartPrefab);
+        if (replace != null)
         {
             //Instantiate a new DroppedPart here before assigning null
-            DroppedBodyPart newPart = Instantiate(replace, replace.transform.position, replace.transform.rotation);
-            newPart.Initialise(heldPart);
+
+            newPart.transform.position = replace.transform.position;
+            newPart.transform.rotation = replace.transform.rotation;
         }
+        else
+        {
+            newPart.transform.position = transform.position;
+        }
+        newPart.Initialise(heldPart);
+
+        ReleasePart();
+
+        return newPart;
+    }
+
+    public BodyParts ReleasePart()
+    {
+        BodyParts part = heldPart;
+
+        heldPart = null;
 
         //Remove the asset from the character's hands
 
-        heldPart = null;
+        return part;
     }
 }

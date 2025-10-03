@@ -20,7 +20,7 @@ public class DroppedBodyPart : BaseInteractable
     
     public override void Interact()
     {
-        PlayerController.instance.PickupPart(part,this);
+        PlayerController.instance.PickupPart(this);
         Destroy(gameObject);
     }
 

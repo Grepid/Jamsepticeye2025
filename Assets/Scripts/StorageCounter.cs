@@ -44,12 +44,7 @@ public class StorageCounter : BaseInteractable
     public override void Interact()
     {
         if (storedPart == null && PlayerController.instance.heldPart == null) return;
-        if (storedPart != null) TakePart();
-        else StorePart(PlayerController.instance.heldPart);
-
-        //PlayerController.instance.heldPart = null;
-
-        
+        TransferPart();
     }
 
     private void UpdateMessage()
@@ -63,32 +58,38 @@ public class StorageCounter : BaseInteractable
         PopupMessage = message;
     }
 
-    public void StorePart(BodyParts part)
+    public void TransferPart()
     {
-        //Make it visible up here
-        storedModel.gameObject.SetActive(true);
-        storedModel.Initialise(part);
+        BodyParts pPart = PlayerController.instance.heldPart;
+        BodyParts sPart = storedPart;
 
-        storedPart = part;
-        PlayerController.instance.heldPart = null;
-    }
 
-    public void TakePart()
-    {
-        BodyParts part = storedPart;
-
-        if(PlayerController.instance.heldPart != null)
+        if(sPart != null)
         {
-            StorePart(PlayerController.instance.heldPart);
+            PlayerController.instance.GivePart(sPart);
+        }
+        else
+        {
+            PlayerController.instance.heldPart = null;
+            //Give a call to tell player hands to be empty
         }
 
-        PlayerController.instance.PickupPart(part);
-        storedModel.gameObject.SetActive(false);
         storedPart = null;
+
+        if(pPart != null)
+        {
+            StorePart(pPart);
+        }
+        else
+        {
+            storedModel.gameObject.SetActive(false);
+        }
     }
 
-    public void SwapPart()
+    public void StorePart(BodyParts part)
     {
-
+        storedModel.Initialise(part);
+        storedModel.gameObject.SetActive(true);
+        storedPart = part;
     }
 }
