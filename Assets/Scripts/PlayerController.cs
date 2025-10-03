@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using static BodyParts;
 
 [RequireComponent(typeof(CharacterController), typeof(InteractionSystem))]
 public class PlayerController : MonoBehaviour
@@ -13,6 +14,8 @@ public class PlayerController : MonoBehaviour
     public static PlayerController instance { get; private set; }
     private float timeDelay = 0.5f;
     [SerializeField] private float MoveSpeed = 10f;
+
+    public BodyParts heldPart;
 
     private void Awake()
     {
@@ -31,6 +34,12 @@ public class PlayerController : MonoBehaviour
         LookAtCursor();
 
         timeDelay -= Time.deltaTime;
+
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            string container = heldPart == null ? "No Object" : heldPart.pt.ToString();
+            print($"Player is holding {container}");
+        }
     }
 
     private void HandleInputs()
@@ -91,5 +100,31 @@ public class PlayerController : MonoBehaviour
             }
             // transform.LookAt(Input.mousePosition);
         }
+    }
+
+    public void PickupPart(BodyParts part,DroppedBodyPart groundDrop = null)
+    {
+        if(heldPart != null)
+        {
+            DropPart(groundDrop);
+        }
+
+        //Give the character model the arm in the hand
+
+        heldPart = part;
+    }
+
+    public void DropPart(DroppedBodyPart replace = null)
+    {
+        if(replace != null)
+        {
+            //Instantiate a new DroppedPart here before assigning null
+            DroppedBodyPart newPart = Instantiate(replace, replace.transform.position, replace.transform.rotation);
+            newPart.Initialise(heldPart);
+        }
+
+        //Remove the asset from the character's hands
+
+        heldPart = null;
     }
 }

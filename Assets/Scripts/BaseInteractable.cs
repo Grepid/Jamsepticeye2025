@@ -13,7 +13,7 @@ public abstract class BaseInteractable : MonoBehaviour
         {
             return _name;
         }
-        private set
+        set
         {
             _name = value;
         }
