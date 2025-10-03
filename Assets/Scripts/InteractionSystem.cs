@@ -27,6 +27,7 @@ public class InteractionSystem : MonoBehaviour
     {
         PerformRay();
         TryUpdatePopup();
+        if(currentHover == null && currentPopupUI != null) Destroy(currentPopupUI.gameObject);
     }
 
     private void PerformRay()
@@ -84,7 +85,8 @@ public class InteractionSystem : MonoBehaviour
 
         if (active)
         {
-            print($"{interactable.Name} was hovered");
+            //print($"{interactable.Name} was hovered");
+            if (currentPopupUI != null) Destroy(currentPopupUI.gameObject);
             currentPopupUI = PopupUI.CreatePopupUI();
             //string message = Vector3.Distance(PlayerController.instance.transform.position, currentHover.transform.position) > interactRange ? "You're too far to interact" : interactable.PopupMessage;
             //currentPopupUI.Initialise(null, message);
@@ -92,7 +94,7 @@ public class InteractionSystem : MonoBehaviour
         else
         {
             if (currentPopupUI != null) Destroy(currentPopupUI.gameObject);
-            print($"{interactable.Name} was UnHovered");
+            //print($"{interactable.Name} was UnHovered");
         }
     }
 
