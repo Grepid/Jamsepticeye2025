@@ -25,6 +25,7 @@ public class Zombie : MonoBehaviour
     private int armCounter = 2;
     private bool torsoExists = false;
     private int currLimbs = 0;
+    public GameObject droppablePrefab;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -163,6 +164,23 @@ public class Zombie : MonoBehaviour
     public void DamageSelf(Vector3 pointOfImpact)
     {
         Debug.Log("hit");
+        // Drop body part at current location (if not average)
+        // Pick random body part from wholeBody
+        BodyParts randomPart;
+        int randomPartToPick = UnityEngine.Random.Range(0, wholeBody.Length);
+        randomPart = wholeBody[randomPartToPick];
+        // remove element (only reason I'm not using List is because 50000 errors showed up when I tried and I don't have enough brain power to deal with that rn)
+        for (int x = randomPartToPick; x < wholeBody.Length-1; ++x)
+        {
+            wholeBody[x] = wholeBody[x + 1];
+        }
+        Array.Resize(ref wholeBody, wholeBody.Length-1);
+        Debug.Log(randomPart.pt);
+        if (!(randomPart.v == Variation.Average || randomPart.tv == TorsoVariation.Average))
+        {
+            DroppedBodyPart drop = Instantiate(droppablePrefab.GetComponent<DroppedBodyPart>(), this.transform.position, Quaternion.identity, this.transform.parent);
+            drop.Initialise(randomPart);
+        }
         this.GetComponent<Rigidbody>().AddForce((transform.position - pointOfImpact) * damageThrust);
         this.hp -= 1;
         if (this.hp <= 0)

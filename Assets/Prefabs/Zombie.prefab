@@ -124,6 +124,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9dd17634f4dacb4bb8391cc8d50b420, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  droppablePrefab: {fileID: 1861509331732145265, guid: 01d43e18a7d810341b497f85d8c2c537,
+    type: 3}
 --- !u!54 &4279710659579857897
 Rigidbody:
   m_ObjectHideFlags: 0
