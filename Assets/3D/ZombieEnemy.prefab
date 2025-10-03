@@ -110,6 +110,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: ZombieBaseLeftArm
       objectReference: {fileID: 0}
+    - target: {fileID: 2338603169372130976, guid: 0a961f89d086f5f4284fb351155a984e,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -1296976969852645106, guid: 0a961f89d086f5f4284fb351155a984e,
+        type: 3}
+    - target: {fileID: 2338603169372130976, guid: 0a961f89d086f5f4284fb351155a984e,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1b2a45f974aa1794d96dda72606cdb87, type: 2}
     - target: {fileID: 2726127934032908645, guid: 0a961f89d086f5f4284fb351155a984e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -775,13 +786,13 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 3759115047712793602, guid: a5cebf36e8eaf6e41ac55d464cc9c152,
+      objectReference: {fileID: 5369599167402187105, guid: 86e5f9b70c547f54cb4363cb553a7583,
         type: 3}
     - target: {fileID: -7721716438457664098, guid: 86e5f9b70c547f54cb4363cb553a7583,
         type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: d95118171c0ee434cb967ab35bd1b2cc, type: 2}
+      objectReference: {fileID: 2100000, guid: 1b2a45f974aa1794d96dda72606cdb87, type: 2}
     - target: {fileID: -7011871809108433652, guid: 86e5f9b70c547f54cb4363cb553a7583,
         type: 3}
       propertyPath: m_LocalPosition.y
