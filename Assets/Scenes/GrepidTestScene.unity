@@ -605,16 +605,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1836092534200207062, guid: e33cc212a189ebf4ca3d4f9c92c97b42,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2235089438964157509, guid: e33cc212a189ebf4ca3d4f9c92c97b42,
-        type: 3}
-      propertyPath: m_ExcludeLayers.m_Bits
-      value: 1280
-      objectReference: {fileID: 0}
     - target: {fileID: 2761329444376060098, guid: e33cc212a189ebf4ca3d4f9c92c97b42,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -623,7 +613,7 @@ PrefabInstance:
     - target: {fileID: 2761329444376060098, guid: e33cc212a189ebf4ca3d4f9c92c97b42,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0.13
       objectReference: {fileID: 0}
     - target: {fileID: 2761329444376060098, guid: e33cc212a189ebf4ca3d4f9c92c97b42,
         type: 3}
@@ -665,41 +655,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4307790736893895092, guid: e33cc212a189ebf4ca3d4f9c92c97b42,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6661438624733401079, guid: e33cc212a189ebf4ca3d4f9c92c97b42,
         type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 6661438624733401079, guid: e33cc212a189ebf4ca3d4f9c92c97b42,
-        type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6661438624733401079, guid: e33cc212a189ebf4ca3d4f9c92c97b42,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6753136286358085935, guid: e33cc212a189ebf4ca3d4f9c92c97b42,
-        type: 3}
-      propertyPath: _popupUIPrefab
-      value: 
-      objectReference: {fileID: 8439584242672224346, guid: e918731bd0ab73943b29bae4adb16b84,
-        type: 3}
-    - target: {fileID: 6753136286358085935, guid: e33cc212a189ebf4ca3d4f9c92c97b42,
-        type: 3}
-      propertyPath: InteractionRayLayers.m_Bits
-      value: 3511
-      objectReference: {fileID: 0}
-    - target: {fileID: 8319958387216035868, guid: e33cc212a189ebf4ca3d4f9c92c97b42,
-        type: 3}
-      propertyPath: GroundLayers.m_Bits
-      value: 128
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

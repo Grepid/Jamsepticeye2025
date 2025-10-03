@@ -17,6 +17,9 @@ public class PlayerController : MonoBehaviour
     private float timeDelay = 0.5f;
     [SerializeField] private float MoveSpeed = 10f;
 
+    public Transform Shovel;
+    public Transform ShovelEnd;
+
     public BodyParts heldPart;
     private DroppedBodyPart droppedPartPrefab;
 
@@ -26,8 +29,7 @@ public class PlayerController : MonoBehaviour
         cc = GetComponent<CharacterController>();
         intSys = GetComponent<InteractionSystem>();
 
-        GameObject shovel = this.transform.GetChild(0).gameObject;
-        shovel.SetActive(false);
+        Shovel.gameObject.SetActive(false);
 
         Addressables.LoadAssetAsync<GameObject>("Assets/Prefabs/DroppedBodyPart.prefab").Completed += (AsyncOperationHandle<GameObject> obj) =>
         {
@@ -73,19 +75,18 @@ public class PlayerController : MonoBehaviour
     {
         if (timeDelay <= 0f)
         {
-            GameObject shovel = this.transform.GetChild(0).gameObject;
-            shovel.SetActive(true);
-            Vector3 originalPos = shovel.transform.position;
-            Quaternion originalRot = shovel.transform.rotation;
+            Shovel.gameObject.SetActive(true);
+            Vector3 originalPos = Shovel.position;
+            Quaternion originalRot = Shovel.rotation;
             // Debug.Log(shovel.name);
             Sequence seq = DOTween.Sequence();
-            seq.Join(shovel.transform.DOLocalMove(this.transform.GetChild(1).localPosition, 0.5f));
-            seq.Join(shovel.transform.DOLocalRotateQuaternion(this.transform.GetChild(1).localRotation, 0.5f));
+            seq.Join(Shovel.DOLocalMove(ShovelEnd.localPosition, 0.5f));
+            seq.Join(Shovel.DOLocalRotateQuaternion(ShovelEnd.localRotation, 0.5f));
 
             seq.OnComplete(() =>
             {
                 seq.Rewind();
-                shovel.SetActive(false);
+                Shovel.gameObject.SetActive(false);
             });
             timeDelay = 0.5f;
         }
@@ -104,7 +105,7 @@ public class PlayerController : MonoBehaviour
 
     private void LookAtCursor()
     {
-        if (!this.transform.GetChild(0).gameObject.activeSelf) {
+        if (!Shovel.gameObject.activeSelf) {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, 999, GroundLayers, QueryTriggerInteraction.Ignore))
             {
