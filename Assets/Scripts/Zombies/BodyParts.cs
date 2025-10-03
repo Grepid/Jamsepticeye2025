@@ -14,6 +14,7 @@ public class BodyParts
     public enum Variation
     {
         Average,
+        Missing,
         Long,
         Mutated,
         Robot,

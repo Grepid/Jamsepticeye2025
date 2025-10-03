@@ -18,6 +18,12 @@ public class DialogueManager : MonoBehaviour
     private float duration = 2.0f;
     private float typingSpeed = 0.05f;
     public Transform[] bouncePositions;
+    public static DialogueManager instance { get; private set; }
+
+    void Awake()
+    {
+        instance = this;
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -44,7 +50,7 @@ public class DialogueManager : MonoBehaviour
         EndDialogue();
     }
 
-    void DisplayNextSentence()
+    public void DisplayNextSentence()
     {
         if (typing)
         {
@@ -67,6 +73,10 @@ public class DialogueManager : MonoBehaviour
 
     void EndDialogue()
     {
+        // give player back movement
+        if (PlayerController.instance == null) {
+            
+        }
         dialogueBox.SetActive(false);
     }
 

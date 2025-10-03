@@ -36,9 +36,14 @@ public class Zombie : MonoBehaviour
         // LLLLLLLLLLLLLLLLETS GO GAMBLINGGGGGGG
         // Determine how many unique body parts this one has
         int uniqueBodyParts = UnityEngine.Random.Range(0, 3);
-        Debug.Log("Num body parts: " + uniqueBodyParts);
+        int forcedSpecial = 0;
+        forcedSpecial = (parts!=null) ? 1 : 0;
+        if (uniqueBodyParts+forcedSpecial >= 3) {
+            forcedSpecial = 0;
+        }
+        Debug.Log("Num body parts: " + (uniqueBodyParts+forcedSpecial));
 
-        for (int i = 0; i < uniqueBodyParts; ++i)
+        for (int i = 0; i < uniqueBodyParts + forcedSpecial; ++i)
         {
             if (!firstPass || parts == null || (vari == null && tvari == null))
             {
@@ -164,6 +169,11 @@ public class Zombie : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+    }
+
+    public BodyParts[] ShowBodyParts()
+    {
+        return wholeBody;
     }
 
     // Update is called once per frame
