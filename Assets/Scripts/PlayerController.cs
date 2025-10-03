@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
 
     public BodyParts heldPart;
     private DroppedBodyPart droppedPartPrefab;
+    public bool isControlling = true;
+    
 
     private void Awake()
     {
@@ -40,9 +42,12 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        MovePlayer();
-        HandleInputs();
-        LookAtCursor();
+        if (isControlling)
+        {
+            MovePlayer();
+            HandleInputs();
+            LookAtCursor();
+        }
 
         timeDelay -= Time.deltaTime;
 
@@ -101,6 +106,7 @@ public class PlayerController : MonoBehaviour
         Vector3 moveVector = moveInput * MoveSpeed * Time.deltaTime;
 
         cc.Move(moveVector);
+        cc.Move(Vector3.down * 5);
     }
 
     private void LookAtCursor()

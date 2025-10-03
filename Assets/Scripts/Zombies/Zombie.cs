@@ -1,6 +1,8 @@
 using UnityEngine;
 using static BodyParts;
 using System;
+using UnityEngine.AI;
+using System.Collections;
 
 public class Zombie : MonoBehaviour
 {
@@ -26,10 +28,35 @@ public class Zombie : MonoBehaviour
     private bool torsoExists = false;
     private int currLimbs = 0;
     public GameObject droppablePrefab;
+    public NavMeshAgent agent;
+    public float reCalculationFrequency;
+    private float recalculationTimer;
+    public float ZombieSpeed = 3;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        agent.speed = ZombieSpeed;
+        agent.SetDestination(PlayerController.instance.transform.position);
+        OnPlayerHit += () =>
+        {
+            StartCoroutine(ZombieLock());
+        };
+    }
+
+    private IEnumerator ZombieLock()
+    {
+        isLocked = true;
+        agent.SetDestination(transform.position);
+        PlayerController.instance.isControlling = false;
+        if(attackRoutine != null)
+        {
+            StopCoroutine(attackRoutine);
+            agent.speed = ZombieSpeed;
+        }
+        yield return new WaitForSeconds(1);
+        isLocked = false;
+        PlayerController.instance.isControlling = true;
+        recalculationTimer = reCalculationFrequency;
     }
 
     public void Initialize(PartType? parts, Variation? vari, TorsoVariation? tvari)
@@ -197,10 +224,56 @@ public class Zombie : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        TrySetAgentPath();
+        TryAttack();
         // walk and run should probably be in another class inherited from an abstract ZombieWalk and ZombieAttack class methinks
         // and after that, this class could attach those specific classes:
         // i.e. if bp.pt = Arm and bp.v = Long, attach ZombieAttackLong to component
         // I forget do we want multiple body parts
         // ...or we just do like 50 million switch cases which looks to be somewhat better? mostly cuz abstract classes and interfaces don't really help much more than switch cases in this case
+        recalculationTimer += Time.deltaTime;
+    }
+    private void TrySetAgentPath()
+    {
+        if (isLocked) return;
+        if(recalculationTimer >= reCalculationFrequency)
+        {
+            agent.SetDestination(PlayerController.instance.transform.position);
+            recalculationTimer = 0;
+        }
+    }
+    public float AttackRange;
+    Coroutine attackRoutine;
+    private bool isLocked;
+    private static event Action OnPlayerHit;
+    public float slowdownWhenAttacking;
+    private void TryAttack()
+    {
+        if (isLocked) return;
+        if (attackRoutine != null) return;
+        if(Vector3.Distance(transform.position , PlayerController.instance.transform.position) <= AttackRange)
+        {
+            attackRoutine = StartCoroutine(Attack());
+        }
+    }
+    private IEnumerator Attack()
+    {
+        agent.speed = ZombieSpeed * slowdownWhenAttacking;
+        //Maybe if a zombie successfully attacks, it freezes all zombies aswell as Stunning the Player or whatever has been proposed (Better than all the zombies just flooding the player)
+
+        //Just gonna do a quick 1 second delay before hitting, and attack just be distance based, we can expand further when specifications get made
+        yield return new WaitForSeconds(1);
+
+        if (Vector3.Distance(transform.position, PlayerController.instance.transform.position) <= AttackRange)
+        {
+            print("Player Hit By Zombie");
+            OnPlayerHit?.Invoke();
+        }
+        else
+        {
+            print("Zombie missed Player");
+        }
+        agent.speed = ZombieSpeed;
+        attackRoutine = null;
     }
 }

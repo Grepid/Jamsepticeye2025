@@ -5,6 +5,7 @@ public class ZombieSpawner : MonoBehaviour
     public GameObject zombiePrefab;
     public GameObject ground;
     public LayerMask enemyLayer;
+    public int ZombiesToSpawn;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -17,7 +18,7 @@ public class ZombieSpawner : MonoBehaviour
         Vector3 center = collider.bounds.center;
         Vector3 size = collider.bounds.size;
         Vector3 extents = collider.bounds.extents;
-        for (int i = 0; i < 10; ++i)
+        for (int i = 0; i < ZombiesToSpawn; ++i)
         {
             x = Random.Range(-0.5f, 0.5f) * ground.transform.localScale.x * ground.transform.right;
             z = Random.Range(-0.5f, 0.5f) * ground.transform.localScale.z * ground.transform.forward;
