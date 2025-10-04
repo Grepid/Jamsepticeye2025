@@ -192,6 +192,160 @@ public class Zombie : MonoBehaviour
         {
             Debug.Log(part.pt + " " + part.v + " " + part.tv);
         }
+
+        // model the zombie first
+        bool armed = false;
+        bool leged = false;
+        foreach (BodyParts part in wholeBody)
+        {
+            switch (part.pt)
+            {
+                case BodyParts.PartType.Arms:
+                    if (!armed)
+                    {
+                        ApplyVisualToLimb("TorsoRig/TorsoMid/TorsoUpper/LeftArmRoot/ZombieBaseLeftArm/LeftArm", part);
+                        armed = true;
+                    }
+                    else
+                    {
+                        ApplyVisualToLimb("TorsoRig/TorsoMid/TorsoUpper/RightArmRoot/ZombieBaseRightArm/RightArm", part);
+                    }
+                    break;
+
+                case BodyParts.PartType.Legs:
+                    if (!leged)
+                    {
+                        ApplyVisualToLimb("TorsoRig/TorsoMid/LeftLegRoot/ZombieBaseLeftLeg/LeftLeg", part);
+                        leged = true;
+                    }
+                    else
+                    {
+                        ApplyVisualToLimb("TorsoRig/TorsoMid/RightLegRoot/ZombieBaseRightLeg/RightLeg", part);
+                    }
+                    break;
+
+                case BodyParts.PartType.Torso:
+                    ApplyVisualToLimb("Torso", part);
+                    break;
+            }
+        }
+    }
+
+    private void ApplyVisualToLimb(string path, BodyParts part)
+    {
+        var limb = transform.Find($"ZombieEnemy/ZombieBaseTorso/{path}");
+        if (limb == null)
+        {
+            // foreach (Transform child in transform)
+            // {
+            //     // Print the name of the child GameObject
+            //     Debug.Log(child.gameObject.name);
+            // }
+            foreach (Transform t in gameObject.GetComponentsInChildren<Transform>())
+            {
+                Debug.Log(t.gameObject.name);
+            }
+            return;
+        } 
+
+        var renderer = limb.GetComponent<SkinnedMeshRenderer>();
+        if (renderer == null) return;
+
+        // if (part.pt != BodyParts.PartType.Torso) {
+        //     // non-torso bits
+        //     switch (part.v)
+        //     {
+        //         case BodyParts.Variation.Missing:
+        //             renderer.enabled = false;
+        //             break;
+        //         case BodyParts.Variation.Average:
+        //             // what do I do here?
+        //             break;
+        //     }
+        // }
+        // Grab filename
+        string meshName = "";
+        bool armed = false;
+        bool leged = false;
+        if (part.v == BodyParts.Variation.Average || part.tv == BodyParts.TorsoVariation.Average)
+        {
+            switch (part.pt)
+            {
+                case BodyParts.PartType.Arms:
+                    if (!armed)
+                    {
+                        meshName = "ZombieBaseLeftArm";
+                        armed = true;
+                    }
+                    else
+                    {
+                        meshName = "ZombieBaseRightArm";
+                    }
+                    break;
+                case BodyParts.PartType.Legs:
+                    if (!leged)
+                    {
+                        meshName = "ZombieBaseTorso/ZombieBaseLeftLeg";
+                        leged = true;
+                    }
+                    else
+                    {
+                        meshName = "ZombieBaseRightLeg";
+                    }
+                    break;
+                case BodyParts.PartType.Torso:
+                    meshName = "ZombieBaseTorso";
+                    break;
+            }
+        }
+        else
+        {
+            switch (part.pt)
+            {
+                case BodyParts.PartType.Arms:
+                    if (!armed)
+                    {
+                        meshName = $"SpecialLimbs/{part.v}LeftArm";
+                        armed = true;
+                    }
+                    else
+                    {
+                        meshName = $"SpecialLimbs/{part.v}RightArm";
+                    }
+                    break;
+                case BodyParts.PartType.Legs:
+                    if (!leged)
+                    {
+                        meshName = $"SpecialLimbs/{part.v}LeftLeg";
+                        leged = true;
+                    }
+                    else
+                    {
+                        meshName = $"SpecialLimbs/{part.v}RightLeg";
+                    }
+                    break;
+                case BodyParts.PartType.Torso:
+                    meshName = "ZombieBaseTorso"; // putting this for now cuz no 3d stuff yet
+                    break;
+            }
+        }
+        // Load the FBX prefab from Resources
+        GameObject meshPrefab = Resources.Load<GameObject>($"3D/{meshName}");
+        if (meshPrefab == null)
+        {
+            Debug.LogWarning($"Mesh not found for {meshName}; defaulting to average");
+            return;
+        }
+        SkinnedMeshRenderer sourceRenderer = meshPrefab.GetComponentInChildren<SkinnedMeshRenderer>();
+        if (sourceRenderer == null)
+        {
+            Debug.LogWarning($"No SkinnedMeshRenderer found on {meshName}");
+            return;
+        }
+
+        // Assign the new mesh and material
+        renderer.sharedMesh = sourceRenderer.sharedMesh;
+        renderer.sharedMaterial = sourceRenderer.sharedMaterial;
     }
 
     public void DamageSelf(Vector3 pointOfImpact)

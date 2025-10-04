@@ -31,7 +31,7 @@ public class ZombieSpawner : MonoBehaviour
             }
             Zombie zom = Instantiate(zombiePrefab.GetComponent<Zombie>(), center + x + z + new Vector3(0, size.y+extents.y, 0), Quaternion.identity, this.transform);
             zom.gameObject.layer = enemyLayer;
-            zom.Initialize(null, null, null);
+            zom.Initialize(BodyParts.PartType.Arms, BodyParts.Variation.Pirate, null);
         }
     }
 

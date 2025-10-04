@@ -7,13 +7,16 @@ using System.Collections.Generic;
 public class DroppedBodyPart : BaseInteractable
 {
     public BodyParts part;
-
     private bool initialised = false;
-    
+    private MeshFilter meshFilter;
+    private MeshRenderer meshRenderer;
+
 
     private void Awake()
     {
-        if(!initialised)Initialise(new BodyParts(BodyParts.PartType.Arms, BodyParts.Variation.Average));
+        if (!initialised) Initialise(new BodyParts(BodyParts.PartType.Arms, BodyParts.Variation.Average));
+        meshFilter = gameObject.AddComponent<MeshFilter>();
+        meshRenderer = gameObject.AddComponent<MeshRenderer>();
     }
 
 
@@ -32,5 +35,18 @@ public class DroppedBodyPart : BaseInteractable
         PopupMessage = $"E to Pickup {Name}";
 
         //Make the model the appropriate one
+        // SkinnedMeshRenderer limbRenderer;
+        // if (part.v == BodyParts.Variation.Average) {
+        //     if (part.pt == BodyParts.PartType.Torso) {
+        //         limbRenderer = transform.Find();
+        //     }
+        // }
+
+        // Mesh baked = new Mesh();
+        // limbRenderer.BakeMesh(baked);
+
+        // meshFilter.mesh = baked;
+
+        // meshRenderer.materials = limbRenderer.sharedMaterials;
     }
 }
