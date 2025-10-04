@@ -13,7 +13,7 @@ public class DroppedBodyPart : BaseInteractable
 
     private void Awake()
     {
-        if(!initialised)Initialise(new BodyParts(BodyParts.PartType.Arms));
+        if(!initialised)Initialise(new BodyParts(BodyParts.PartType.Arms, BodyParts.Variation.Average));
     }
 
 
@@ -28,7 +28,7 @@ public class DroppedBodyPart : BaseInteractable
     {
         initialised = true;
         this.part = part;
-        Name = $"{part.pt}";
+        Name = (part.pt != BodyParts.PartType.Torso) ? $"{part.v + " " + part.pt}" : $"{part.tv + " " + part.pt}";
         PopupMessage = $"E to Pickup {Name}";
 
         //Make the model the appropriate one

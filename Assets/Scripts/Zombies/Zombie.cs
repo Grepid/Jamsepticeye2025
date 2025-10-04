@@ -32,6 +32,8 @@ public class Zombie : MonoBehaviour
     public float reCalculationFrequency;
     private float recalculationTimer;
     public float ZombieSpeed = 3;
+    private Rigidbody _rb;
+    private NavMeshAgent _agent;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -41,6 +43,9 @@ public class Zombie : MonoBehaviour
         {
             StartCoroutine(ZombieLock());
         };
+
+        _rb = GetComponent<Rigidbody>();
+        _agent = GetComponent<NavMeshAgent>();
     }
 
     private IEnumerator ZombieLock()
@@ -48,7 +53,7 @@ public class Zombie : MonoBehaviour
         isLocked = true;
         agent.SetDestination(transform.position);
         PlayerController.instance.isControlling = false;
-        if(attackRoutine != null)
+        if (attackRoutine != null)
         {
             StopCoroutine(attackRoutine);
             agent.speed = ZombieSpeed;
@@ -65,11 +70,12 @@ public class Zombie : MonoBehaviour
         // Determine how many unique body parts this one has
         int uniqueBodyParts = UnityEngine.Random.Range(0, 3);
         int forcedSpecial = 0;
-        forcedSpecial = (parts!=null) ? 1 : 0;
-        if (uniqueBodyParts+forcedSpecial >= 3) {
+        forcedSpecial = (parts != null) ? 1 : 0;
+        if (uniqueBodyParts + forcedSpecial >= 3)
+        {
             forcedSpecial = 0;
         }
-        Debug.Log("Num body parts: " + (uniqueBodyParts+forcedSpecial));
+        Debug.Log("Num body parts: " + (uniqueBodyParts + forcedSpecial));
 
         for (int i = 0; i < uniqueBodyParts + forcedSpecial; ++i)
         {
@@ -191,24 +197,41 @@ public class Zombie : MonoBehaviour
     public void DamageSelf(Vector3 pointOfImpact)
     {
         Debug.Log("hit");
+        // Fixing the uh bug where the zombies fly 5000000 blocks away on hit lemme cook
+        // _rb.isKinematic = false;
+        // _rb.useGravity = false;
+        // _agent.enabled = false;
+        // Ok saw a youtube tutorial imma follow that
+
         // Drop body part at current location (if not average)
         // Pick random body part from wholeBody
         BodyParts randomPart;
         int randomPartToPick = UnityEngine.Random.Range(0, wholeBody.Length);
         randomPart = wholeBody[randomPartToPick];
         // remove element (only reason I'm not using List is because 50000 errors showed up when I tried and I don't have enough brain power to deal with that rn)
-        for (int x = randomPartToPick; x < wholeBody.Length-1; ++x)
+        for (int x = randomPartToPick; x < wholeBody.Length - 1; ++x)
         {
             wholeBody[x] = wholeBody[x + 1];
         }
-        Array.Resize(ref wholeBody, wholeBody.Length-1);
+        Array.Resize(ref wholeBody, wholeBody.Length - 1);
         Debug.Log(randomPart.pt);
-        if (!(randomPart.v == Variation.Average || randomPart.tv == TorsoVariation.Average))
+        DroppedBodyPart drop = null;
+        if (!(randomPart.v == Variation.Average || randomPart.tv == TorsoVariation.Average || randomPart.v == Variation.Missing))
         {
-            DroppedBodyPart drop = Instantiate(droppablePrefab.GetComponent<DroppedBodyPart>(), this.transform.position, Quaternion.identity, this.transform.parent);
+            drop = Instantiate(droppablePrefab.GetComponent<DroppedBodyPart>(), this.transform.position, Quaternion.identity, this.transform.parent);
             drop.Initialise(randomPart);
+            drop.GetComponent<Collider>().enabled = false;
         }
-        this.GetComponent<Rigidbody>().AddForce((transform.position - pointOfImpact) * damageThrust);
+
+        // this.GetComponent<Rigidbody>().AddForce((transform.position - pointOfImpact) * damageThrust);
+        StopAllCoroutines();
+        StartCoroutine(ApplyKnockback(pointOfImpact));
+
+        if (drop != null)
+        {
+            drop.GetComponent<Collider>().enabled = true;
+        }
+
         this.hp -= 1;
         if (this.hp <= 0)
         {
@@ -236,7 +259,7 @@ public class Zombie : MonoBehaviour
     private void TrySetAgentPath()
     {
         if (isLocked) return;
-        if(recalculationTimer >= reCalculationFrequency)
+        if (recalculationTimer >= reCalculationFrequency)
         {
             agent.SetDestination(PlayerController.instance.transform.position);
             recalculationTimer = 0;
@@ -251,7 +274,7 @@ public class Zombie : MonoBehaviour
     {
         if (isLocked) return;
         if (attackRoutine != null) return;
-        if(Vector3.Distance(transform.position , PlayerController.instance.transform.position) <= AttackRange)
+        if (Vector3.Distance(transform.position, PlayerController.instance.transform.position) <= AttackRange)
         {
             attackRoutine = StartCoroutine(Attack());
         }
@@ -275,5 +298,36 @@ public class Zombie : MonoBehaviour
         }
         agent.speed = ZombieSpeed;
         attackRoutine = null;
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        LayerMask enemyLayer = LayerMask.NameToLayer("Enemy");
+        if (other.gameObject.layer == enemyLayer)
+        {
+            StopAllCoroutines();
+            StartCoroutine(ApplyKnockback(transform.position));
+        }
+    }
+
+    private IEnumerator ApplyKnockback(Vector3 pointOfImpact)
+    {
+        yield return null;
+
+
+        isLocked = true;
+        _rb.useGravity = true;
+        _agent.enabled = false;
+        _rb.AddForce((transform.position - pointOfImpact) * damageThrust);
+
+        yield return new WaitForFixedUpdate();
+        yield return new WaitUntil(() => _rb.linearVelocity.magnitude < 0.05f);
+
+        _rb.useGravity = false;
+        _agent.Warp(transform.position);
+        _agent.enabled = true;
+
+        yield return null;
+        isLocked = false;
     }
 }
