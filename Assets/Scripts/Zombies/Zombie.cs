@@ -236,34 +236,90 @@ public class Zombie : MonoBehaviour
         var limb = transform.Find($"ZombieEnemy/ZombieBaseTorso/{path}");
         if (limb == null)
         {
-            // foreach (Transform child in transform)
+            // foreach (Transform t in gameObject.GetComponentsInChildren<Transform>())
             // {
-            //     // Print the name of the child GameObject
-            //     Debug.Log(child.gameObject.name);
+            //     Debug.Log(t.gameObject.name);
             // }
-            foreach (Transform t in gameObject.GetComponentsInChildren<Transform>())
-            {
-                Debug.Log(t.gameObject.name);
-            }
             return;
         } 
 
         var renderer = limb.GetComponent<SkinnedMeshRenderer>();
         if (renderer == null) return;
 
-        // if (part.pt != BodyParts.PartType.Torso) {
-        //     // non-torso bits
-        //     switch (part.v)
-        //     {
-        //         case BodyParts.Variation.Missing:
-        //             renderer.enabled = false;
-        //             break;
-        //         case BodyParts.Variation.Average:
-        //             // what do I do here?
-        //             break;
-        //     }
-        // }
         // Grab filename
+        string meshName = GetFileNameFromBodyPart(part);
+        
+        // Load the FBX prefab from Resources
+        GameObject meshPrefab = Resources.Load<GameObject>($"3D/{meshName}");
+        if (meshPrefab == null)
+        {
+            Debug.LogWarning($"Mesh not found for {meshName}; defaulting to average");
+            return;
+        }
+        SkinnedMeshRenderer sourceRenderer = meshPrefab.GetComponentInChildren<SkinnedMeshRenderer>();
+        if (sourceRenderer == null)
+        {
+            Debug.LogWarning($"No SkinnedMeshRenderer found on {meshName}");
+            return;
+        }
+
+        // Assign the new mesh and material
+        renderer.sharedMesh = sourceRenderer.sharedMesh;
+        renderer.sharedMaterial = sourceRenderer.sharedMaterial;
+    }
+
+    public void DamageSelf(Vector3 pointOfImpact)
+    {
+        Debug.Log("hit");
+        // Fixing the uh bug where the zombies fly 5000000 blocks away on hit lemme cook
+        // _rb.isKinematic = false;
+        // _rb.useGravity = false;
+        // _agent.enabled = false;
+        // Ok saw a youtube tutorial imma follow that
+
+        // Drop body part at current location (if not average)
+        // Pick random body part from wholeBody
+        BodyParts randomPart;
+        int randomPartToPick = UnityEngine.Random.Range(0, wholeBody.Length);
+        randomPart = wholeBody[randomPartToPick];
+        // remove element (only reason I'm not using List is because 50000 errors showed up when I tried and I don't have enough brain power to deal with that rn)
+        for (int x = randomPartToPick; x < wholeBody.Length - 1; ++x)
+        {
+            wholeBody[x] = wholeBody[x + 1];
+        }
+        Array.Resize(ref wholeBody, wholeBody.Length - 1);
+        Debug.Log(randomPart.pt);
+        DroppedBodyPart drop = null;
+        if (!(randomPart.v == Variation.Average || randomPart.tv == TorsoVariation.Average || randomPart.v == Variation.Missing))
+        {
+            drop = Instantiate(droppablePrefab.GetComponent<DroppedBodyPart>(), this.transform.position, Quaternion.identity, this.transform.parent);
+            drop.Initialise(randomPart, GetFileNameFromBodyPart(randomPart));
+            drop.GetComponent<Collider>().enabled = false;
+        }
+
+        // this.GetComponent<Rigidbody>().AddForce((transform.position - pointOfImpact) * damageThrust);
+        StopAllCoroutines();
+        StartCoroutine(ApplyKnockback(pointOfImpact));
+
+        if (drop != null)
+        {
+            drop.GetComponent<Collider>().enabled = true;
+        }
+
+        this.hp -= 1;
+        if (this.hp <= 0)
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
+    public BodyParts[] ShowBodyParts()
+    {
+        return wholeBody;
+    }
+
+    public string GetFileNameFromBodyPart(BodyParts part)
+    {
         string meshName = "";
         bool armed = false;
         bool leged = false;
@@ -329,75 +385,8 @@ public class Zombie : MonoBehaviour
                     break;
             }
         }
-        // Load the FBX prefab from Resources
-        GameObject meshPrefab = Resources.Load<GameObject>($"3D/{meshName}");
-        if (meshPrefab == null)
-        {
-            Debug.LogWarning($"Mesh not found for {meshName}; defaulting to average");
-            return;
-        }
-        SkinnedMeshRenderer sourceRenderer = meshPrefab.GetComponentInChildren<SkinnedMeshRenderer>();
-        if (sourceRenderer == null)
-        {
-            Debug.LogWarning($"No SkinnedMeshRenderer found on {meshName}");
-            return;
-        }
-
-        // Assign the new mesh and material
-        renderer.sharedMesh = sourceRenderer.sharedMesh;
-        renderer.sharedMaterial = sourceRenderer.sharedMaterial;
+        return meshName;
     }
-
-    public void DamageSelf(Vector3 pointOfImpact)
-    {
-        Debug.Log("hit");
-        // Fixing the uh bug where the zombies fly 5000000 blocks away on hit lemme cook
-        // _rb.isKinematic = false;
-        // _rb.useGravity = false;
-        // _agent.enabled = false;
-        // Ok saw a youtube tutorial imma follow that
-
-        // Drop body part at current location (if not average)
-        // Pick random body part from wholeBody
-        BodyParts randomPart;
-        int randomPartToPick = UnityEngine.Random.Range(0, wholeBody.Length);
-        randomPart = wholeBody[randomPartToPick];
-        // remove element (only reason I'm not using List is because 50000 errors showed up when I tried and I don't have enough brain power to deal with that rn)
-        for (int x = randomPartToPick; x < wholeBody.Length - 1; ++x)
-        {
-            wholeBody[x] = wholeBody[x + 1];
-        }
-        Array.Resize(ref wholeBody, wholeBody.Length - 1);
-        Debug.Log(randomPart.pt);
-        DroppedBodyPart drop = null;
-        if (!(randomPart.v == Variation.Average || randomPart.tv == TorsoVariation.Average || randomPart.v == Variation.Missing))
-        {
-            drop = Instantiate(droppablePrefab.GetComponent<DroppedBodyPart>(), this.transform.position, Quaternion.identity, this.transform.parent);
-            drop.Initialise(randomPart);
-            drop.GetComponent<Collider>().enabled = false;
-        }
-
-        // this.GetComponent<Rigidbody>().AddForce((transform.position - pointOfImpact) * damageThrust);
-        StopAllCoroutines();
-        StartCoroutine(ApplyKnockback(pointOfImpact));
-
-        if (drop != null)
-        {
-            drop.GetComponent<Collider>().enabled = true;
-        }
-
-        this.hp -= 1;
-        if (this.hp <= 0)
-        {
-            Destroy(this.gameObject);
-        }
-    }
-
-    public BodyParts[] ShowBodyParts()
-    {
-        return wholeBody;
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -457,7 +446,8 @@ public class Zombie : MonoBehaviour
     void OnCollisionEnter(Collision other)
     {
         LayerMask enemyLayer = LayerMask.NameToLayer("Enemy");
-        if (other.gameObject.layer == enemyLayer)
+        LayerMask droppedLayer = LayerMask.NameToLayer("DroppedEntity");
+        if (other.gameObject.layer == enemyLayer || other.gameObject.layer == droppedLayer)
         {
             StopAllCoroutines();
             StartCoroutine(ApplyKnockback(transform.position));

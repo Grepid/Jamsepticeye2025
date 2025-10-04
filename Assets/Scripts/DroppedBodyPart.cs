@@ -14,7 +14,7 @@ public class DroppedBodyPart : BaseInteractable
 
     private void Awake()
     {
-        if (!initialised) Initialise(new BodyParts(BodyParts.PartType.Arms, BodyParts.Variation.Average));
+        if (!initialised) Initialise(new BodyParts(BodyParts.PartType.Arms, BodyParts.Variation.Average), "TorsoRig/TorsoMid/TorsoUpper/LeftArmRoot/ZombieBaseLeftArm/LeftArm");
         meshFilter = gameObject.AddComponent<MeshFilter>();
         meshRenderer = gameObject.AddComponent<MeshRenderer>();
     }
@@ -27,26 +27,57 @@ public class DroppedBodyPart : BaseInteractable
         Destroy(gameObject);
     }
 
-    public void Initialise(BodyParts part)
+    public void Initialise(BodyParts part, string filename = null)
     {
         initialised = true;
         this.part = part;
         Name = (part.pt != BodyParts.PartType.Torso) ? $"{part.v + " " + part.pt}" : $"{part.tv + " " + part.pt}";
         PopupMessage = $"E to Pickup {Name}";
 
-        //Make the model the appropriate one
-        // SkinnedMeshRenderer limbRenderer;
-        // if (part.v == BodyParts.Variation.Average) {
-        //     if (part.pt == BodyParts.PartType.Torso) {
-        //         limbRenderer = transform.Find();
-        //     }
-        // }
+        if (filename != null)
+        {
+            //Make the model the appropriate one
+            var renderer = GetComponentInChildren<SkinnedMeshRenderer>();
+            if (renderer == null)
+            {
+                return;
+            }
 
-        // Mesh baked = new Mesh();
-        // limbRenderer.BakeMesh(baked);
+            // Load the FBX prefab from Resources
+            GameObject meshPrefab = Resources.Load<GameObject>($"3D/{filename}");
+            Debug.Log(filename);
+            if (meshPrefab == null)
+            {
+                Debug.LogWarning($"Mesh not found for {filename}; defaulting to average");
+                return;
+            }
+            else
+            {
+                GameObject visual = Instantiate(meshPrefab, transform);
+                visual.name = "Visual";
+                visual.transform.localPosition = Vector3.zero;
+                visual.transform.localRotation = Quaternion.identity;
+                visual.transform.localScale = Vector3.one;
 
-        // meshFilter.mesh = baked;
+                var skinned = visual.GetComponentInChildren<SkinnedMeshRenderer>();
+                if (skinned != null && skinned.sharedMesh != null)
+                {
+                    // Get the mesh’s local-space center and flip it so it’s centered in the capsule
+                    Vector3 offset = -skinned.sharedMesh.bounds.center;
+                    skinned.transform.localPosition = offset;
+                }
+            }
+            
+            // SkinnedMeshRenderer sourceRenderer = meshPrefab.GetComponentInChildren<SkinnedMeshRenderer>();
+            // if (sourceRenderer == null)
+            // {
+            //     Debug.LogWarning($"No SkinnedMeshRenderer found on {filename}");
+            //     return;
+            // }
 
-        // meshRenderer.materials = limbRenderer.sharedMaterials;
+            // // Assign the new mesh and material + copy bones over
+            // renderer.sharedMesh = sourceRenderer.sharedMesh;
+            // renderer.sharedMaterial = sourceRenderer.sharedMaterial;
+        }
     }
 }
