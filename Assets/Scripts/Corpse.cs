@@ -3,6 +3,11 @@ using UnityEngine;
 public class Corpse : MonoBehaviour
 {
     private BodyParts[] parts = new BodyParts[5];
+    private BodyParts torsoPart = null;
+    private BodyParts lArmPart = null;
+    private BodyParts rArmPart = null;
+    private BodyParts lLegPart = null;
+    private BodyParts rLegPart = null;
     public LayerMask corpseLayer;
     public GameObject lArm;
     public GameObject rArm;
@@ -19,6 +24,38 @@ public class Corpse : MonoBehaviour
     void Update()
     {
         WhichClicked();
+    }
+
+    public void Initialize() {
+        foreach (BodyParts part in Records.givenCorpse.ShowBodyParts())
+        {
+            switch (part.pt)
+            {
+                case BodyParts.PartType.Torso:
+                    torsoPart = part;
+                    break;
+                case BodyParts.PartType.Arms:
+                    if (rArmPart == null)
+                    {
+                        rArmPart = part;
+                    }
+                    else
+                    {
+                        lArmPart = part;
+                    }
+                    break;
+                case BodyParts.PartType.Legs:
+                    if (rLegPart == null)
+                    {
+                        rLegPart = part;
+                    }
+                    else
+                    {
+                        lLegPart = part;
+                    }
+                    break;
+            }
+        }
     }
 
     private void WhichClicked()
