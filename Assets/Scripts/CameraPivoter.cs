@@ -2,7 +2,9 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
+
 
 [CustomEditor(typeof(CameraPivoter))]
 public class CameraPivoterEditor : Editor
@@ -18,6 +20,7 @@ public class CameraPivoterEditor : Editor
         }
     }
 }
+#endif
 
 public class CameraPivoter : MonoBehaviour
 {

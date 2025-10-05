@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/Scenes/ActualGame/MainGame.unity
     guid: 21855ea8a734f504b805f390e575a5e0
   - enabled: 1
+    path: Assets/Scenes/ActualGame/MGame1EmergencyTest.unity
+    guid: 08644d65d16b67a4583ed6f99df2ebc3
+  - enabled: 1
     path: Assets/Scenes/ActualGame/FuneralHome.unity
     guid: 9a5d56f930ea87c478bee1b4e5536839
   - enabled: 1
