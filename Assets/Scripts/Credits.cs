@@ -23,7 +23,7 @@ public class Credits : MonoBehaviour
             "Michelle Lee - 3D Artist\n" +
             "sabao0184\n" +
             "Haocheng Mai - Programmer\n" +
-            "Bryn Jones - Concept & 3D Artist\n" +
+            "Bryn Jones (100cheekychipmunks) - Concept & 3D Artist\n" +
             "ebrahimcomps\n" +
             "i9xp2101\n" +
             "YIPPEEEE WAHOOOOOOOOOOOOOO" +

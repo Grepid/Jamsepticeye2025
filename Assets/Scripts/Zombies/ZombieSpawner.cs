@@ -7,7 +7,7 @@ public class ZombieSpawner : MonoBehaviour
     public GameObject ground;
     public LayerMask enemyLayer;
     public int ZombiesToSpawn;
-    private float spawnTimer = 1f;
+    private float spawnTimer = 5f;
     private float currTimer = 0f;
     // Here's how it's gonna work
     // Zombies spawn whenever Records.freeze = false

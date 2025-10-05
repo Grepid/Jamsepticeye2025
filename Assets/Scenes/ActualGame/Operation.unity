@@ -555,6 +555,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   button: {fileID: 123220733}
+  button2: {fileID: 1194098868}
   playerInvText: {fileID: 394001626}
 --- !u!1 &180072397
 GameObject:

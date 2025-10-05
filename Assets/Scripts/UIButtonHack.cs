@@ -5,6 +5,7 @@ using TMPro;
 public class UIButtonHack : MonoBehaviour
 {
     public Button button;
+    public Button button2;
     public TextMeshProUGUI playerInvText;
     void Start()
     {
@@ -12,6 +13,10 @@ public class UIButtonHack : MonoBehaviour
         {
             // SceneChanger.instance.ChangeScene("MGame1EmergencyTest");
             SceneChanger.instance.RemoveScene("Operation");
+        });
+        button2.onClick.AddListener(() =>
+        {
+            SceneChanger.instance.ChangeScene("Credits");
         });
     }
     void Update()
