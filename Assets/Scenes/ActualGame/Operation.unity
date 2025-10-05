@@ -2407,6 +2407,8 @@ MonoBehaviour:
   corpseRLeg: {fileID: 19604405}
   corpseTorso: {fileID: 1615887070}
   cam: {fileID: 180072399}
+  droppablePrefab: {fileID: 1861509331732145265, guid: 01d43e18a7d810341b497f85d8c2c537,
+    type: 3}
 --- !u!4 &1933612478
 Transform:
   m_ObjectHideFlags: 0

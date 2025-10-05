@@ -149,7 +149,7 @@ public class Corpse : MonoBehaviour
                 case BodyParts.PartType.Legs:
                     if (!leged)
                     {
-                        meshName = "ZombieBaseTorso/ZombieBaseLeftLeg";
+                        meshName = "ZombieBaseLeftLeg";
                         leged = true;
                     }
                     else
@@ -382,9 +382,11 @@ public class Corpse : MonoBehaviour
                         break;
                 }
             }
-            if (PlayerController.instance.heldPart.v == BodyParts.Variation.Missing || PlayerController.instance.heldPart.tv == BodyParts.TorsoVariation.Missing)
-            {
-                PlayerController.instance.heldPart = null;
+            if (PlayerController.instance != null) {
+                if (PlayerController.instance.heldPart.v == BodyParts.Variation.Missing || PlayerController.instance.heldPart.tv == BodyParts.TorsoVariation.Missing)
+                {
+                    PlayerController.instance.heldPart = null;
+                }
             }
         }
     }

@@ -315,6 +315,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ZombieBaseTorso
       objectReference: {fileID: 0}
+    - target: {fileID: 5440064556288995634, guid: c004bfaec01302a4eb36993a68840eff,
+        type: 3}
+      propertyPath: m_Name
+      value: RightLeg Root
+      objectReference: {fileID: 0}
     - target: {fileID: 7195182637730992122, guid: c004bfaec01302a4eb36993a68840eff,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -534,6 +539,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0.582
       objectReference: {fileID: 0}
+    - target: {fileID: -18424089062747919, guid: 10311b0a0dbc18a438ec64bd1fd1e878,
+        type: 3}
+      propertyPath: m_Name
+      value: LeftLeg
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 10311b0a0dbc18a438ec64bd1fd1e878,
         type: 3}
       propertyPath: m_Name
@@ -670,6 +680,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 404080794196398631, guid: d687f2aab126a3a4ca34235b14c848a8,
         type: 3}
+    - target: {fileID: -4035994570920015290, guid: d687f2aab126a3a4ca34235b14c848a8,
+        type: 3}
+      propertyPath: m_Name
+      value: RightLeg
+      objectReference: {fileID: 0}
     - target: {fileID: -341471006942502214, guid: d687f2aab126a3a4ca34235b14c848a8,
         type: 3}
       propertyPath: m_LocalRotation.w
