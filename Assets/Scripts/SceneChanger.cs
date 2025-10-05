@@ -22,6 +22,21 @@ public class SceneChanger : MonoBehaviour
 
     public void ChangeScene(string sceneName)
     {
+        switch (sceneName)
+        {
+            case "Operation":
+                Records.freeze = true;
+                break;
+            case "MainGame":
+                Records.freeze = false;
+                PlayerController.instance.transform.position = Records.playerLastPos;
+                break;
+            case "MGame1EmergencyTest":
+                Records.freeze = false;
+                break;
+            default:
+                break;
+        }
         SceneManager.LoadScene(sceneName);
     }
 
@@ -44,6 +59,7 @@ public class SceneChanger : MonoBehaviour
         }
         Debug.Log("Loaded Scene");
     }
+    // ^ I HATE THIS WITH A BURNING PASSION DOES NOT WORK 
 
     public void RemoveScene(string sceneName)
     {

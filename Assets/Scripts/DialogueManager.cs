@@ -49,6 +49,7 @@ public class DialogueManager : MonoBehaviour
         bounceSequence.Append(imageBox.transform.DOJump(bouncePositions[2].position, jumpPower, numJumps, duration));
         bounceSequence.Append(imageBox.transform.DOJump(bouncePositions[0].position, jumpPower, numJumps, duration));
         bounceSequence.SetLoops(-1, LoopType.Restart);
+        dialogueBox.SetActive(false);
     }
 
     public void UpdateSentences(string[] newSentences)

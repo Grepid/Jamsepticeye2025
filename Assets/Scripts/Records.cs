@@ -10,4 +10,5 @@ public static class Records
     // deliver a bad corpse, reputation go down
     // deliver a good corpse, reputation go up
     public static bool freeze = false;
+    public static Vector3 playerLastPos;
 }
