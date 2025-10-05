@@ -121,8 +121,9 @@ public class Zombie : MonoBehaviour
                 }
                 else
                 {
-                    bp = (bp1 == PartType.Torso) ? new BodyParts(bp1, tvari: (TorsoVariation)valsT.GetValue(UnityEngine.Random.Range(1, valsT.Length))) : new BodyParts(bp1, vari: (Variation)valsNT.GetValue(UnityEngine.Random.Range(1, valsNT.Length - 1)));
+                    bp = (bp1 == PartType.Torso) ? new BodyParts(bp1, tvari: (TorsoVariation)valsT.GetValue(UnityEngine.Random.Range(2, valsT.Length))) : new BodyParts(bp1, vari: (Variation)valsNT.GetValue(UnityEngine.Random.Range(1, valsNT.Length - 1)));
                     // ^ start at 1 to exclude average
+                    // ^ start at 2 to exclude missing only for torso
                 }
                 firstPass = false;
             }
@@ -246,6 +247,17 @@ public class Zombie : MonoBehaviour
         var renderer = limb.GetComponent<SkinnedMeshRenderer>();
         if (renderer == null) return;
 
+        // If this body part is Missing, hide the renderer and return
+        // For torso parts the TorsoVariation is used, for arms/legs the Variation is used.
+        if ((part.v != null && part.v == BodyParts.Variation.Missing) || (part.tv != null && part.tv == BodyParts.TorsoVariation.Missing))
+        {
+            // Disable rendering and clear mesh/material to avoid leftover visuals
+            renderer.enabled = false;
+            renderer.sharedMesh = null;
+            renderer.sharedMaterial = null;
+            return;
+        }
+
         // Grab filename
         string meshName = GetFileNameFromBodyPart(part);
         
@@ -263,9 +275,10 @@ public class Zombie : MonoBehaviour
             return;
         }
 
-        // Assign the new mesh and material
+        // Assign the new mesh and material and ensure renderer is enabled
         renderer.sharedMesh = sourceRenderer.sharedMesh;
         renderer.sharedMaterial = sourceRenderer.sharedMaterial;
+        renderer.enabled = true;
     }
 
     public void DamageSelf(Vector3 pointOfImpact)

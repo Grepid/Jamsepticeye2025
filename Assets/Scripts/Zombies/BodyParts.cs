@@ -25,6 +25,7 @@ public class BodyParts
     public enum TorsoVariation
     {
         Average,
+        Missing,
         Suit,
         Construction_Uniform,
         Bulletproof_Vest,

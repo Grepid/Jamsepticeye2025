@@ -36,7 +36,7 @@ public class Family : MonoBehaviour
     void CallMortician()
     {
         zomR = Instantiate(zombiePrefab.GetComponent<Zombie>(), new Vector3(10000, 10000, 10000), Quaternion.identity, this.transform);
-        zomR.Initialize(BodyParts.PartType.Arms, vari: BodyParts.Variation.Missing, tvari: null);
+        zomR.Initialize(BodyParts.PartType.Arms, vari: BodyParts.Variation.Pirate, tvari: null);
         zomG = Instantiate(zombiePrefab.GetComponent<Zombie>(), new Vector3(10000, 10000, 10000), Quaternion.identity, this.transform);
         zomG.BuildOutRestOfBody();
 
@@ -51,7 +51,7 @@ public class Family : MonoBehaviour
         currSentence.Clear();
         currSentence.Add("Dear Funeral Director,");
         currSentence.Add("Please prepare my grandpas corpse for today's funeral.");
-        currSentence.Add("He lost his arm to a sea creature years ago.");
+        currSentence.Add("He lost his arm to a sea creature years ago. And then gained a pirate arm.");
         currSentence.Add("What the body has: ");
         foreach (BodyParts part in Records.currReqs.ShowBodyParts())
         {
@@ -64,7 +64,7 @@ public class Family : MonoBehaviour
         dm.UpdateSentences(currSentence.ToArray());
         dm.DisplayNextSentence();
 
-        Corpse.instance.Initialize();
+        // Corpse.instance.Initialize();
     }
 
     public void ReadLetterAgain()
