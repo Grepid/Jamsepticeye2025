@@ -42,19 +42,21 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (isControlling)
-        {
-            MovePlayer();
-            HandleInputs();
-            LookAtCursor();
-        }
+        if (!Records.freeze) {
+            if (isControlling)
+            {
+                MovePlayer();
+                HandleInputs();
+                LookAtCursor();
+            }
 
-        timeDelay -= Time.deltaTime;
+            timeDelay -= Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            string container = heldPart == null ? "No Object" : heldPart.pt.ToString();
-            print($"Player is holding {container}");
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                string container = heldPart == null ? "No Object" : heldPart.pt.ToString();
+                print($"Player is holding {container}");
+            }
         }
     }
 

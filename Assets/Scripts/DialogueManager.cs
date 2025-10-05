@@ -48,6 +48,7 @@ public class DialogueManager : MonoBehaviour
 
     public void DisplayNextSentence()
     {
+        Records.freeze = true;
         Debug.Log("working?");
         if (typing)
         {
@@ -70,6 +71,7 @@ public class DialogueManager : MonoBehaviour
 
     public void EndDialogue()
     {
+        Records.freeze = false;
         dialogueBox.SetActive(false);
     }
 

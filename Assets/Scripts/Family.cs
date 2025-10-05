@@ -3,10 +3,14 @@ using System.Collections.Generic;
 
 public class Family : MonoBehaviour
 {
+    // Note for myself on what Family does (and when it triggers)
+    // Triggers when you interact with the Letter
+    // First time it activates per round, it spawns the zoms
+    // Next time it activates, time freezes and you just read
     public GameObject zombiePrefab;
     private Zombie zomR;
     private Zombie zomG;
-    private bool calledYet = false;
+    private int roundStart = -1;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -16,20 +20,15 @@ public class Family : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!calledYet) {
+        if (roundStart != Records.requestNum)
+        {
             CallMortician();
+            roundStart = Records.requestNum;
         }
     }
 
     void CallMortician()
     {
-        calledYet = true;
-        // give new corpse and requirement to player (maybe based on request number in the future)
-        // Zombie requirementZom = new Zombie();
-        // Zombie givenZom = new Zombie();
-        // requirementZom.Initialize(BodyParts.PartType.Arms, vari:BodyParts.Variation.Missing, tvari:null);
-        // givenZom.BuildOutRestOfBody(); // <- completely average corpse / zombie
-        // duck it spaghetti code time
         zomR = Instantiate(zombiePrefab.GetComponent<Zombie>(), new Vector3(10000, 10000, 10000), Quaternion.identity, this.transform);
         zomR.Initialize(BodyParts.PartType.Arms, vari: BodyParts.Variation.Missing, tvari: null);
         zomG = Instantiate(zombiePrefab.GetComponent<Zombie>(), new Vector3(10000, 10000, 10000), Quaternion.identity, this.transform);
@@ -54,5 +53,7 @@ public class Family : MonoBehaviour
         dm.gameObject.SetActive(true);
         dm.UpdateSentences(sentences.ToArray());
         dm.DisplayNextSentence();
+
+        Corpse.instance.Initialize();
     }
 }

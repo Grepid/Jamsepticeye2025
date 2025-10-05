@@ -390,14 +390,21 @@ public class Zombie : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        TrySetAgentPath();
-        TryAttack();
-        // walk and run should probably be in another class inherited from an abstract ZombieWalk and ZombieAttack class methinks
-        // and after that, this class could attach those specific classes:
-        // i.e. if bp.pt = Arm and bp.v = Long, attach ZombieAttackLong to component
-        // I forget do we want multiple body parts
-        // ...or we just do like 50 million switch cases which looks to be somewhat better? mostly cuz abstract classes and interfaces don't really help much more than switch cases in this case
-        recalculationTimer += Time.deltaTime;
+        if (!Records.freeze)
+        {
+            TrySetAgentPath();
+            TryAttack();
+            // walk and run should probably be in another class inherited from an abstract ZombieWalk and ZombieAttack class methinks
+            // and after that, this class could attach those specific classes:
+            // i.e. if bp.pt = Arm and bp.v = Long, attach ZombieAttackLong to component
+            // I forget do we want multiple body parts
+            // ...or we just do like 50 million switch cases which looks to be somewhat better? mostly cuz abstract classes and interfaces don't really help much more than switch cases in this case
+            recalculationTimer += Time.deltaTime;
+        }
+        else
+        {
+            StopAllCoroutines();
+        }
     }
     private void TrySetAgentPath()
     {

@@ -9,4 +9,5 @@ public static class Records
     // ^ Maybe if we have time but I wanna implement a thing where like if you have low / high reputation, more zombies spawn
     // deliver a bad corpse, reputation go down
     // deliver a good corpse, reputation go up
+    public static bool freeze = false;
 }

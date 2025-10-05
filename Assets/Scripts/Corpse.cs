@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Corpse : MonoBehaviour
 {
+    public static Corpse instance { get; private set; }
     private BodyParts[] parts = new BodyParts[5];
     private BodyParts torsoPart = null;
     private BodyParts lArmPart = null;
@@ -14,6 +15,11 @@ public class Corpse : MonoBehaviour
     public GameObject lLeg;
     public GameObject rLeg;
     public GameObject torso;
+
+    private void Awake()
+    {
+        instance = this;
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
