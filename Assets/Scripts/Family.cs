@@ -63,6 +63,7 @@ public class Family : MonoBehaviour
         dm.gameObject.SetActive(true);
         dm.UpdateSentences(currSentence.ToArray());
         dm.DisplayNextSentence();
+        Records.initBodyArray = false;
 
         // Corpse.instance.Initialize();
     }

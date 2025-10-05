@@ -33,6 +33,15 @@ public class Corpse : MonoBehaviour
     void Start()
     {
         corpseLayer = LayerMask.NameToLayer("Corpse");
+        if (!Records.initBodyArray)
+        {
+            BodyParts[] givenCorpseParts = Records.givenCorpse.ShowBodyParts();
+            for (int i = 0; i < givenCorpseParts.Length; i++)
+            {
+                Records.currZombieParts[i] = Records.givenCorpse.ShowBodyParts()[i];
+            }
+            Records.initBodyArray = true;
+        }
         Initialize();
     }
 
@@ -44,7 +53,7 @@ public class Corpse : MonoBehaviour
 
     public void Initialize()
     {
-        foreach (BodyParts part in Records.givenCorpse.ShowBodyParts())
+        foreach (BodyParts part in Records.currZombieParts)
         {
             switch (part.pt)
             {
@@ -238,6 +247,9 @@ public class Corpse : MonoBehaviour
                             }
                             else
                             {
+                                if (torsoPart.tv == BodyParts.TorsoVariation.Missing) {
+                                    return;
+                                }
                                 DroppedBodyPart drop = null;
                                 Vector3 randomOffset = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
                                 drop = Instantiate(droppablePrefab.GetComponent<DroppedBodyPart>(), PlayerController.instance.transform.position + randomOffset, Quaternion.identity, PlayerController.instance.transform.parent);
@@ -271,6 +283,9 @@ public class Corpse : MonoBehaviour
                             }
                             else
                             {
+                                if (rArmPart.v == BodyParts.Variation.Missing) {
+                                    return;
+                                }
                                 DroppedBodyPart drop = null;
                                 Vector3 randomOffset = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
                                 drop = Instantiate(droppablePrefab.GetComponent<DroppedBodyPart>(), PlayerController.instance.transform.position + randomOffset, Quaternion.identity, PlayerController.instance.transform.parent);
@@ -304,6 +319,9 @@ public class Corpse : MonoBehaviour
                             }
                             else
                             {
+                                if (lArmPart.v == BodyParts.Variation.Missing) {
+                                    return;
+                                }
                                 DroppedBodyPart drop = null;
                                 Vector3 randomOffset = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
                                 drop = Instantiate(droppablePrefab.GetComponent<DroppedBodyPart>(), PlayerController.instance.transform.position + randomOffset, Quaternion.identity, PlayerController.instance.transform.parent);
@@ -337,6 +355,9 @@ public class Corpse : MonoBehaviour
                             }
                             else
                             {
+                                if (rLegPart.v == BodyParts.Variation.Missing) {
+                                    return;
+                                }
                                 DroppedBodyPart drop = null;
                                 Vector3 randomOffset = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
                                 drop = Instantiate(droppablePrefab.GetComponent<DroppedBodyPart>(), PlayerController.instance.transform.position + randomOffset, Quaternion.identity, PlayerController.instance.transform.parent);
@@ -370,6 +391,9 @@ public class Corpse : MonoBehaviour
                             }
                             else
                             {
+                                if (lLegPart.v == BodyParts.Variation.Missing) {
+                                    return;
+                                }
                                 DroppedBodyPart drop = null;
                                 Vector3 randomOffset = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
                                 drop = Instantiate(droppablePrefab.GetComponent<DroppedBodyPart>(), PlayerController.instance.transform.position + randomOffset, Quaternion.identity, PlayerController.instance.transform.parent);
@@ -382,7 +406,19 @@ public class Corpse : MonoBehaviour
                         break;
                 }
             }
-            if (PlayerController.instance != null) {
+            // spaghetti code time
+            Records.currZombieParts[0] = torsoPart;
+            Records.currZombieParts[1] = lArmPart;
+            Records.currZombieParts[2] = rArmPart;
+            Records.currZombieParts[3] = lLegPart;
+            Records.currZombieParts[4] = rLegPart;
+            
+            if (PlayerController.instance != null)
+            {
+                if (PlayerController.instance.heldPart == null)
+                {
+                    return;
+                }
                 if (PlayerController.instance.heldPart.v == BodyParts.Variation.Missing || PlayerController.instance.heldPart.tv == BodyParts.TorsoVariation.Missing)
                 {
                     PlayerController.instance.heldPart = null;

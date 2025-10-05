@@ -29,7 +29,6 @@ public class SceneChanger : MonoBehaviour
                 break;
             case "MainGame":
                 Records.freeze = false;
-                PlayerController.instance.transform.position = Records.playerLastPos;
                 break;
             case "MGame1EmergencyTest":
                 Records.freeze = false;
