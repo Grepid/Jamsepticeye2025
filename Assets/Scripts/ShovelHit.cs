@@ -10,7 +10,9 @@ public class ShovelHit : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (timeDelay < 0f) {
+        Debug.Log("Hit something");
+        if (timeDelay < 0f)
+        {
             enemyLayer = LayerMask.NameToLayer("Enemy");
             if (other.gameObject.layer == enemyLayer)
             {

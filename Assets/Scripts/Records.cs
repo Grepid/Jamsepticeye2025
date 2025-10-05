@@ -12,4 +12,5 @@ public static class Records
     // deliver a good corpse, reputation go up
     public static bool freeze = false;
     public static bool initBodyArray = false;
+    public static int spawnedZoms = 0;
 }

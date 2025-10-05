@@ -67,17 +67,6 @@ public class DroppedBodyPart : BaseInteractable
                     skinned.transform.localPosition = offset;
                 }
             }
-            
-            // SkinnedMeshRenderer sourceRenderer = meshPrefab.GetComponentInChildren<SkinnedMeshRenderer>();
-            // if (sourceRenderer == null)
-            // {
-            //     Debug.LogWarning($"No SkinnedMeshRenderer found on {filename}");
-            //     return;
-            // }
-
-            // // Assign the new mesh and material + copy bones over
-            // renderer.sharedMesh = sourceRenderer.sharedMesh;
-            // renderer.sharedMaterial = sourceRenderer.sharedMaterial;
         }
     }
 }

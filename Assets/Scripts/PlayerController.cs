@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     public BodyParts heldPart;
     private DroppedBodyPart droppedPartPrefab;
     public bool isControlling = true;
-    
+
 
     private void Awake()
     {
@@ -35,14 +35,15 @@ public class PlayerController : MonoBehaviour
 
         Addressables.LoadAssetAsync<GameObject>("Assets/Prefabs/DroppedBodyPart.prefab").Completed += (AsyncOperationHandle<GameObject> obj) =>
         {
-            droppedPartPrefab= obj.Result.GetComponent<DroppedBodyPart>();
+            droppedPartPrefab = obj.Result.GetComponent<DroppedBodyPart>();
             Addressables.Release(obj);
         };
     }
 
     private void Update()
     {
-        if (!Records.freeze) {
+        if (!Records.freeze)
+        {
             if (isControlling)
             {
                 MovePlayer();
@@ -113,7 +114,8 @@ public class PlayerController : MonoBehaviour
 
     private void LookAtCursor()
     {
-        if (!Shovel.gameObject.activeSelf) {
+        if (!Shovel.gameObject.activeSelf)
+        {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, 999, GroundLayers, QueryTriggerInteraction.Ignore))
             {
@@ -127,13 +129,13 @@ public class PlayerController : MonoBehaviour
 
     public void PickupPart(DroppedBodyPart part)
     {
-        if(heldPart != null)
+        if (heldPart != null)
         {
             DropPart(part);
         }
 
         GivePart(part.part);
-        
+
     }
 
     public void GivePart(BodyParts part)
@@ -156,7 +158,7 @@ public class PlayerController : MonoBehaviour
         {
             newPart.transform.position = transform.position;
         }
-        newPart.Initialise(heldPart);
+        newPart.Initialise(heldPart, GetFileNameFromBodyPart(heldPart));
 
         ReleasePart();
 
@@ -172,5 +174,75 @@ public class PlayerController : MonoBehaviour
         //Remove the asset from the character's hands
 
         return part;
+    }
+    
+    public string GetFileNameFromBodyPart(BodyParts part)
+    {
+        string meshName = "";
+        bool armed = false;
+        bool leged = false;
+        if (part.v == BodyParts.Variation.Average || part.tv == BodyParts.TorsoVariation.Average)
+        {
+            switch (part.pt)
+            {
+                case BodyParts.PartType.Arms:
+                    if (!armed)
+                    {
+                        meshName = "ZombieBaseLeftArm";
+                        armed = true;
+                    }
+                    else
+                    {
+                        meshName = "ZombieBaseRightArm";
+                    }
+                    break;
+                case BodyParts.PartType.Legs:
+                    if (!leged)
+                    {
+                        meshName = "ZombieBaseTorso/ZombieBaseLeftLeg";
+                        leged = true;
+                    }
+                    else
+                    {
+                        meshName = "ZombieBaseRightLeg";
+                    }
+                    break;
+                case BodyParts.PartType.Torso:
+                    meshName = "ZombieBaseTorso";
+                    break;
+            }
+        }
+        else
+        {
+            switch (part.pt)
+            {
+                case BodyParts.PartType.Arms:
+                    if (!armed)
+                    {
+                        meshName = $"SpecialLimbs/{part.v}LeftArm";
+                        armed = true;
+                    }
+                    else
+                    {
+                        meshName = $"SpecialLimbs/{part.v}RightArm";
+                    }
+                    break;
+                case BodyParts.PartType.Legs:
+                    if (!leged)
+                    {
+                        meshName = $"SpecialLimbs/{part.v}LeftLeg";
+                        leged = true;
+                    }
+                    else
+                    {
+                        meshName = $"SpecialLimbs/{part.v}RightLeg";
+                    }
+                    break;
+                case BodyParts.PartType.Torso:
+                    meshName = "ZombieBaseTorso"; // putting this for now cuz no 3d stuff yet
+                    break;
+            }
+        }
+        return meshName;
     }
 }

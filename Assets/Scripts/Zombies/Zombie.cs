@@ -21,7 +21,7 @@ public class Zombie : MonoBehaviour
     private BodyParts bp;
     private BodyParts[] wholeBody = new BodyParts[5]; // a whole body has 2 arms, 2 legs, and 1 torso. We also want it so that there are between 0-2 unique body parts per zombie
     private bool firstPass = true;
-    private float damageThrust = 500f;
+    private float damageThrust = 250f;
     private int hp = 5;
     private int legCounter = 2;
     private int armCounter = 2;
@@ -481,13 +481,15 @@ public class Zombie : MonoBehaviour
 
         isLocked = true;
         _rb.useGravity = true;
+        _rb.isKinematic = false;
         _agent.enabled = false;
         _rb.AddForce((transform.position - pointOfImpact) * damageThrust);
 
         yield return new WaitForFixedUpdate();
-        yield return new WaitUntil(() => _rb.linearVelocity.magnitude < 0.05f);
+        yield return new WaitUntil(() => _rb.linearVelocity.magnitude < 0.15f);
 
         _rb.useGravity = false;
+        _rb.isKinematic = true;
         _agent.Warp(transform.position);
         _agent.enabled = true;
 

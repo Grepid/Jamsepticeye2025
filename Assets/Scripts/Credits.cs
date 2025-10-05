@@ -22,8 +22,8 @@ public class Credits : MonoBehaviour
             "mynameisnotjams\n" +
             "Michelle Lee - 3D Artist\n" +
             "sabao0184\n" +
-            "derpymissile - Programmer\n" +
-            "cm220\n" +
+            "Haocheng Mai - Programmer\n" +
+            "Bryn Jones - Concept & 3D Artist\n" +
             "ebrahimcomps\n" +
             "i9xp2101\n" +
             "YIPPEEEE WAHOOOOOOOOOOOOOO" +
