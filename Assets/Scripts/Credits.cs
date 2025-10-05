@@ -20,7 +20,7 @@ public class Credits : MonoBehaviour
             "grepid - Programmer\n" +
             "jamesbuckett\n" +
             "mynameisnotjams\n" +
-            "tsumisan18\n" +
+            "Michelle Lee - 3D Artist\n" +
             "sabao0184\n" +
             "derpymissile - Programmer\n" +
             "cm220\n" +
