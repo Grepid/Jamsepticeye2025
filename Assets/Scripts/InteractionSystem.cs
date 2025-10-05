@@ -73,15 +73,21 @@ public class InteractionSystem : MonoBehaviour
         currentHover.Interact();
     }
 
+    public void StopInteract()
+    {
+        Destroy(currentPopupUI.gameObject);
+        currentPopupUI = null;
+    }
+
     /// <summary>
     /// Runs a hover function based off of the interactable passed through. If null it will do nothing
     /// </summary>
     /// <param name="interactable"></param>
     /// <param name="active"></param>
-    private void DoHover(BaseInteractable interactable,bool active)
+    private void DoHover(BaseInteractable interactable, bool active)
     {
         if (interactable == null) return;
-        if(active) currentHover = interactable;
+        if (active) currentHover = interactable;
 
         if (active)
         {

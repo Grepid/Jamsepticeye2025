@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Scenes/ActualGame/FuneralHome.unity
     guid: 9a5d56f930ea87c478bee1b4e5536839
   - enabled: 1
+    path: Assets/Scenes/ActualGame/Operation.unity
+    guid: 812a8359685e9e940bc922c46c6ea2ce
+  - enabled: 1
     path: Assets/Scenes/ActualGame/Credits.unity
     guid: 11764034de806354db19e0b51c5d697e
   m_configObjects:

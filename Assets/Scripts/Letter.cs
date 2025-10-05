@@ -3,12 +3,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class MollieJones : BaseInteractable
+public class Letter : BaseInteractable
 {
     public override void Interact()
     {
         print($"Interacted with {gameObject.name}");
-        // pull up the camera with the 3D model of the body parts
-        SceneChanger.instance.AddScene("Operation");
+        // read letter again
+        Family.instance.ReadLetterAgain();
     }
 }

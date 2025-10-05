@@ -11,6 +11,12 @@ public class Family : MonoBehaviour
     private Zombie zomR;
     private Zombie zomG;
     private int roundStart = -1;
+    private List<string> currSentence = new List<string>();
+    public static Family instance { get; private set; }
+    private void Awake()
+    {
+        instance = this;
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -37,23 +43,35 @@ public class Family : MonoBehaviour
         Records.currReqs = zomR;
         Records.givenCorpse = zomG;
 
-        // build sentences
-        List<string> sentences = new List<string>();
-        sentences.Add("Dear Funeral Director,");
-        sentences.Add("Please prepare my grandpas corpse for today's funeral.");
-        sentences.Add("He lost his arm to a sea creature years ago.");
-        sentences.Add("What the body has: ");
+        // no further use; delete em so that errors don't clog up build
+        Destroy(zomR.gameObject);
+        Destroy(zomG.gameObject);
+
+        // build currSentence
+        currSentence.Clear();
+        currSentence.Add("Dear Funeral Director,");
+        currSentence.Add("Please prepare my grandpas corpse for today's funeral.");
+        currSentence.Add("He lost his arm to a sea creature years ago.");
+        currSentence.Add("What the body has: ");
         foreach (BodyParts part in Records.currReqs.ShowBodyParts())
         {
-            sentences.Add(part.pt + " " + part.v + " " + part.tv);
+            currSentence.Add(part.pt + " " + part.v + " " + part.tv);
         }
 
         DialogueManager dm = FindFirstObjectByType<DialogueManager>();
         Debug.Log(dm);
         dm.gameObject.SetActive(true);
-        dm.UpdateSentences(sentences.ToArray());
+        dm.UpdateSentences(currSentence.ToArray());
         dm.DisplayNextSentence();
 
         Corpse.instance.Initialize();
+    }
+
+    public void ReadLetterAgain()
+    {
+        DialogueManager dm = FindFirstObjectByType<DialogueManager>();
+        dm.gameObject.SetActive(true);
+        dm.UpdateSentences(currSentence.ToArray());
+        dm.DisplayNextSentence();
     }
 }

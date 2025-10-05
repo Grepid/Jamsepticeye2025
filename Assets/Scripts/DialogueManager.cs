@@ -23,6 +23,11 @@ public class DialogueManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
         instance = this;
         sentences = new string[]{
             "Six years now my mother gone to earth. This dew, light as footsteps of the dead. She often walked out here, craned her neck, considered the fruit, hundreds of globes in their leathery hides, figuring on custard and pudding, meringue and hollandaise.",
@@ -31,6 +36,11 @@ public class DialogueManager : MonoBehaviour
             "essence of citrus, summer's distillate— drift into my face and settle. Water and gold brew in the quiet deeps at the far end of the season. Leaves swallow the body of light and the breath of water brims over.",
             "My hands cup each other the way hers did."
         };
+        
+    }
+
+    void Start()
+    {
         continueButton.onClick.AddListener(DisplayNextSentence);
 
         Sequence bounceSequence = DOTween.Sequence();
@@ -49,6 +59,7 @@ public class DialogueManager : MonoBehaviour
     public void DisplayNextSentence()
     {
         Records.freeze = true;
+        dialogueBox.SetActive(true);
         Debug.Log("working?");
         if (typing)
         {
@@ -90,6 +101,8 @@ public class DialogueManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.E)) {
+            DisplayNextSentence();
+        }
     }
 }

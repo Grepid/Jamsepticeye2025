@@ -1,9 +1,10 @@
 using UnityEngine;
+using TMPro;
 
 public class Corpse : MonoBehaviour
 {
     public static Corpse instance { get; private set; }
-    private BodyParts[] parts = new BodyParts[5];
+    private BodyParts[] parts;
     private BodyParts torsoPart = null;
     private BodyParts lArmPart = null;
     private BodyParts rArmPart = null;
@@ -15,10 +16,13 @@ public class Corpse : MonoBehaviour
     public GameObject lLeg;
     public GameObject rLeg;
     public GameObject torso;
+    public TextMeshProUGUI currentHold;
+    public Camera cam;
 
     private void Awake()
     {
         instance = this;
+        parts = new BodyParts[5];
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -68,12 +72,18 @@ public class Corpse : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            Debug.Log("clicked");
             // click on part, check which one
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit)) {
+                Debug.Log(hit.transform.name);
+            }
 
             if (Physics.Raycast(ray, out hit) && hit.transform.gameObject.layer == corpseLayer)
             {
+                Debug.Log(hit.transform.gameObject.name);
                 // Debug.Log("clicked on: " + hit.transform.name);
                 switch (hit.transform.name)
                 {
