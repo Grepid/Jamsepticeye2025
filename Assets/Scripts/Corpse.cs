@@ -259,7 +259,7 @@ public class Corpse : MonoBehaviour
                                 Vector3 randomOffset = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
                                 drop = Instantiate(droppablePrefab.GetComponent<DroppedBodyPart>(), PlayerController.instance.transform.position + randomOffset, Quaternion.identity, PlayerController.instance.transform.parent);
                                 drop.Initialise(torsoPart, GetFileNameFromBodyPart(torsoPart));
-                                drop.GetComponent<Collider>().enabled = false;
+                                drop.GetComponent<Collider>().enabled = true;
                                 torsoPart = new BodyParts(BodyParts.PartType.Torso, null, BodyParts.TorsoVariation.Missing);
                             }
                         }
@@ -295,7 +295,7 @@ public class Corpse : MonoBehaviour
                                 Vector3 randomOffset = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
                                 drop = Instantiate(droppablePrefab.GetComponent<DroppedBodyPart>(), PlayerController.instance.transform.position + randomOffset, Quaternion.identity, PlayerController.instance.transform.parent);
                                 drop.Initialise(rArmPart, GetFileNameFromBodyPart(rArmPart));
-                                drop.GetComponent<Collider>().enabled = false;
+                                drop.GetComponent<Collider>().enabled = true;
                                 rArmPart = new BodyParts(BodyParts.PartType.Arms, BodyParts.Variation.Missing, null);
                             }
                         }
@@ -331,7 +331,7 @@ public class Corpse : MonoBehaviour
                                 Vector3 randomOffset = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
                                 drop = Instantiate(droppablePrefab.GetComponent<DroppedBodyPart>(), PlayerController.instance.transform.position + randomOffset, Quaternion.identity, PlayerController.instance.transform.parent);
                                 drop.Initialise(lArmPart, GetFileNameFromBodyPart(lArmPart));
-                                drop.GetComponent<Collider>().enabled = false;
+                                drop.GetComponent<Collider>().enabled = true;
                                 lArmPart = new BodyParts(BodyParts.PartType.Arms, BodyParts.Variation.Missing, null);
                             }
                         }
@@ -367,7 +367,7 @@ public class Corpse : MonoBehaviour
                                 Vector3 randomOffset = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
                                 drop = Instantiate(droppablePrefab.GetComponent<DroppedBodyPart>(), PlayerController.instance.transform.position + randomOffset, Quaternion.identity, PlayerController.instance.transform.parent);
                                 drop.Initialise(rLegPart, GetFileNameFromBodyPart(rLegPart));
-                                drop.GetComponent<Collider>().enabled = false;
+                                drop.GetComponent<Collider>().enabled = true;
                                 rLegPart = new BodyParts(BodyParts.PartType.Legs, BodyParts.Variation.Missing, null);
                             }
                         }
@@ -403,7 +403,7 @@ public class Corpse : MonoBehaviour
                                 Vector3 randomOffset = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
                                 drop = Instantiate(droppablePrefab.GetComponent<DroppedBodyPart>(), PlayerController.instance.transform.position + randomOffset, Quaternion.identity, PlayerController.instance.transform.parent);
                                 drop.Initialise(lLegPart, GetFileNameFromBodyPart(lLegPart));
-                                drop.GetComponent<Collider>().enabled = false;
+                                drop.GetComponent<Collider>().enabled = true;
                                 lLegPart = new BodyParts(BodyParts.PartType.Legs, BodyParts.Variation.Missing, null);
                             }
                         }

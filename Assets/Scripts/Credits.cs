@@ -25,7 +25,7 @@ public class Credits : MonoBehaviour
             "Haocheng Mai - Programmer\n" +
             "Bryn Jones (100cheekychipmunks) - Concept & 3D Artist\n" +
             "ebrahimcomps - Music Composer\n" +
-            "i9xp2101\n" +
+            "Zeyad Adel - Writer\n" +
             "YIPPEEEE WAHOOOOOOOOOOOOOO" +
             "It is 1 am local time and I am so so tired";
     }
