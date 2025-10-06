@@ -242,7 +242,7 @@ public class Zombie : MonoBehaviour
             //     Debug.Log(t.gameObject.name);
             // }
             return;
-        } 
+        }
 
         var renderer = limb.GetComponent<SkinnedMeshRenderer>();
         if (renderer == null) return;
@@ -260,7 +260,7 @@ public class Zombie : MonoBehaviour
 
         // Grab filename
         string meshName = GetFileNameFromBodyPart(part);
-        
+
         // Load the FBX prefab from Resources
         GameObject meshPrefab = Resources.Load<GameObject>($"3D/{meshName}");
         if (meshPrefab == null)
@@ -417,6 +417,7 @@ public class Zombie : MonoBehaviour
         else
         {
             StopAllCoroutines();
+            StopZombies();
         }
     }
     private void TrySetAgentPath()
@@ -495,5 +496,17 @@ public class Zombie : MonoBehaviour
 
         yield return null;
         isLocked = false;
+    }
+
+    private void StopZombies()
+    {
+        StartCoroutine(FreezeZombies());
+    }
+
+    IEnumerator FreezeZombies()
+    {
+        _agent.enabled = false;
+        yield return new WaitUntil(() => !Records.freeze);
+        _agent.enabled = true;
     }
 }

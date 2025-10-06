@@ -19,12 +19,12 @@ public class Credits : MonoBehaviour
             "zeltig - Team Lead\n" +
             "grepid - Programmer\n" +
             "jamesbuckett\n" +
-            "mynameisnotjams\n" +
+            "mynameisnotjams - 3D Artist\n" +
             "Michelle Lee - 3D Artist\n" +
             "sabao0184\n" +
             "Haocheng Mai - Programmer\n" +
             "Bryn Jones (100cheekychipmunks) - Concept & 3D Artist\n" +
-            "ebrahimcomps\n" +
+            "ebrahimcomps - Music Composer\n" +
             "i9xp2101\n" +
             "YIPPEEEE WAHOOOOOOOOOOOOOO" +
             "It is 1 am local time and I am so so tired";

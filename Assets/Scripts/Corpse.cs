@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+  using UnityEngine.EventSystems;
 
 public class Corpse : MonoBehaviour
 {
@@ -209,6 +210,10 @@ public class Corpse : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            // check if it's clicking the UI
+            if (EventSystem.current.IsPointerOverGameObject()) {
+                return;
+            }
             Debug.Log("clicked");
             // click on part, check which one
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);

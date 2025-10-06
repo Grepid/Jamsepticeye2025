@@ -55,7 +55,7 @@ public class Family : MonoBehaviour
         currSentence.Add("What the body has: ");
         foreach (BodyParts part in Records.currReqs.ShowBodyParts())
         {
-            currSentence.Add(part.pt + " " + part.v + " " + part.tv);
+            currSentence.Add(part.pt + " " + part.v + "" + part.tv);
         }
 
         DialogueManager dm = FindFirstObjectByType<DialogueManager>();
